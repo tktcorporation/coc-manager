@@ -28,7 +28,7 @@ export class CurrentWarService {
         $log.debug(adate);
     }
 
-    public async attackAlerm() {
+    public async attackAlarm() {
         const war = new CurrentWar(await CocApi.getClanWar(clanTag));
         $log.debug(war.state);
         if (war.state === "") return;

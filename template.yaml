@@ -66,11 +66,11 @@ Globals:
                 EIP_ID: !Ref EipId
 
 Resources:
-    AttackAlermFunction:
+    AttackAlarmFunction:
         Type: AWS::Serverless::Function
         Properties:
             CodeUri: ./handler.zip
-            Handler: index.attackAlerm
+            Handler: index.attackAlarm
             Role: !Ref Role
             Events:
                 Schedule:

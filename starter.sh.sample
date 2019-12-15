@@ -10,4 +10,4 @@ export COC_API_TOKEN=
 export LINE_NOTIFY_API_TOKEN=
 export CLAN_TAG=
 
-node dist/attackAlerm.js
+node dist/attackAlarm.js

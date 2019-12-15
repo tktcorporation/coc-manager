@@ -20,11 +20,11 @@ export const checkClanWarStatus = async () => {
         $log.fatal(error);
     }
 };
-export const attackAlerm = async () => {
+export const attackAlarm = async () => {
     try {
         // $log.info(await startNatgw());
         $log.info(await connect());
-        $log.info(await new CurrentWarService().attackAlerm());
+        $log.info(await new CurrentWarService().attackAlarm());
         // $log.info(await stopNatgw());
     } catch (error) {
         $log.fatal(error);
