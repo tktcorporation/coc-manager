@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+    app:
+        build: .
+        working_dir: /app
+        volumes:
+            - ./:/app
+        environment:
+            - DB_HOST=db
+            - DB_PORT=3306
+            - DB_DATABASE=coc
+            - DB_USER=root
+            - DB_PASSWORD=password
+            - NODE_ENV=develop
+            - COC_API_TOKEN=
+            - LINE_NOTIFY_API_TOKEN=
+            - CLAN_TAG=
+        links:
+            - db
+    db:
+        container_name: db-mysql
+        image: mysql:5.7.21
+        restart: always
+        ports:
+            - "23306:3306"
+        volumes:
+            #  - "./mysql/data:/var/lib/mysql"
+            - "./mysql/init:/docker-entrypoint-initdb.d"
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: coc
+        networks:
+            - app-net
+networks:
+    app-net:
+        driver: bridge

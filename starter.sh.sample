@@ -1,0 +1,13 @@
+#!/bin/sh
+
+export DB_HOST=
+export DB_PORT=
+export DB_DATABASE=
+export DB_USER=
+export DB_PASSWORD=
+export NODE_ENV=
+export COC_API_TOKEN=
+export LINE_NOTIFY_API_TOKEN=
+export CLAN_TAG=
+
+node dist/attackAlerm.js

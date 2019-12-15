@@ -1,0 +1,18 @@
+{
+    "type": "mysql",
+    "host": "HOST",
+    "port": 3306,
+    "username": "USERNAME",
+    "password": "PASSWORD",
+    "database": "DATABASE",
+    "synchronize": false,
+    "logging": false,
+    "entities": ["src/domain/model/**/*.ts"],
+    "migrations": ["src/infrastructure/db/migrations/**/*.ts"],
+    "subscribers": ["src/infrastructure/db/subscribers/**/*.ts"],
+    "cli": {
+        "entitiesDir": "src/domain/model",
+        "migrationsDir": "src/infrastructure/db/migrations",
+        "subscribersDir": "src/infrastructure/db/subscribers"
+    }
+}

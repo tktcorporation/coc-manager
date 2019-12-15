@@ -1,0 +1,139 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: API using NodeJS and Typescript
+
+Parameters:
+    DbHost:
+        Type: String
+        Default: hoge
+    DbPort:
+        Type: String
+        Default: hoge
+    DbDatabase:
+        Type: String
+        Default: hoge
+    DbUser:
+        Type: String
+        Default: hoge
+    DbPassword:
+        Type: String
+        Default: hoge
+    NodeEnv:
+        Type: String
+        Default: hoge
+    SecurityGroupId:
+        Type: String
+        Default: hoge
+    SubnetIdA:
+        Type: String
+        Default: hoge
+    SubnetIdB:
+        Type: String
+        Default: hoge
+    LineNotifyApiToken:
+        Type: String
+    CocApiToken:
+        Type: String
+    Role:
+        Type: String
+    BandAccessToken:
+        Type: String
+    EipId:
+        Type: String
+    SubnetId:
+        Type: String
+Globals:
+    Function:
+        Runtime: nodejs10.x
+        Timeout: 300
+        VpcConfig:
+            SecurityGroupIds:
+                - !Ref SecurityGroupId
+            SubnetIds:
+                - !Ref SubnetIdA
+                # - !Ref SubnetIdB
+        Environment:
+            Variables:
+                DB_HOST: !Ref DbHost
+                DB_PORT: !Ref DbPort
+                DB_DATABASE: !Ref DbDatabase
+                DB_USER: !Ref DbUser
+                DB_PASSWORD: !Ref DbPassword
+                NODE_ENV: !Ref NodeEnv
+                LINE_NOTIFY_API_TOKEN: !Ref LineNotifyApiToken
+                COC_API_TOKEN: !Ref CocApiToken
+                SUBNET_ID: !Ref SubnetId
+                EIP_ID: !Ref EipId
+
+Resources:
+    AttackAlermFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: ./handler.zip
+            Handler: index.attackAlerm
+            Role: !Ref Role
+            Events:
+                Schedule:
+                    Type: Schedule
+                    Properties:
+                        Schedule: rate(1 hour)
+    CheckClanWarStatusFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: ./handler.zip
+            Handler: index.checkClanWarStatus
+            Role: !Ref Role
+            Events:
+                DeviceResource:
+                    Type: Api
+                    Properties:
+                        Path: /checkClanWarStatus
+                        Method: post
+    # CreateNewPostFunction:
+    #     Type: AWS::Serverless::Function
+    #     Properties:
+    #         CodeUri: ./handler.zip
+    #         Handler: index.createNewPost
+    #         Role: !Ref Role
+    #         Events:
+    #             createNewPost:
+    #                 Type: Api
+    #                 Properties:
+    #                     Path: /band/post
+    #                     Method: post
+    # RefreshPostFunction:
+    #     Type: AWS::Serverless::Function
+    #     Properties:
+    #         CodeUri: ./handler.zip
+    #         Handler: index.refreshPost
+    #         Role: !Ref Role
+    #         Events:
+    #             refreshPost:
+    #                 Type: Api
+    #                 Properties:
+    #                     Path: /band/post/refresh
+    #                     Method: post
+    StartNatGatewayFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: ./handler.zip
+            Handler: index.startNatGateway
+            Role: !Ref Role
+            Events:
+                refreshPost:
+                    Type: Api
+                    Properties:
+                        Path: /natgw
+                        Method: post
+    StopNatGatewayFunction:
+        Type: AWS::Serverless::Function
+        Properties:
+            CodeUri: ./handler.zip
+            Handler: index.stopNatGateway
+            Role: !Ref Role
+            Events:
+                refreshPost:
+                    Type: Api
+                    Properties:
+                        Path: /natgw
+                        Method: delete
