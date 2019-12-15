@@ -12,20 +12,16 @@ const connect = async () => {
 
 export const checkClanWarStatus = async () => {
     try {
-        await startNatgw();
         await connect();
         await new CurrentWarService().checkStatus();
-        await stopNatgw();
     } catch (error) {
         $log.fatal(error);
     }
 };
 export const attackAlarm = async () => {
     try {
-        // $log.info(await startNatgw());
         $log.info(await connect());
         $log.info(await new CurrentWarService().attackAlarm());
-        // $log.info(await stopNatgw());
     } catch (error) {
         $log.fatal(error);
     }

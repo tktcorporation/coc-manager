@@ -10,22 +10,9 @@ const clanTag = process.env.CLAN_TAG!;
 
 export class CurrentWarService {
     public async checkStatus() {
-        const war = await CocApi.getClanWar(clanTag);
+        const war = new CurrentWar(await CocApi.getClanWar(clanTag));
         $log.debug(war);
-        const currentTime = new Date();
-        const startTime = new Date(war.startTime);
-        const endTime = new Date(war.endTime);
-        const diff = endTime.getTime() - currentTime.getTime();
-        const adate = endTime.getTime() - startTime.getTime();
-
-        $log.debug(currentTime);
-        $log.debug(currentTime.getTime());
-        $log.debug(startTime);
-        $log.debug(startTime.getTime());
-        $log.debug(endTime);
-        $log.debug(endTime.getTime());
-        $log.debug(diff);
-        $log.debug(adate);
+        await LineNotify.post(war.state);
     }
 
     public async attackAlarm() {
