@@ -1,0 +1,24 @@
+# AWS SAM
+packaged.yaml
+.aws-sam/
+node_modules
+dist
+*.zip
+
+# IDE
+.idea/
+
+.envrc
+
+# vscode
+.history
+
+migration/ddl/create_table.sql
+yarn-error.log
+.env
+env.json
+*.env.json
+
+ormconfig.json
+
+starter.sh
