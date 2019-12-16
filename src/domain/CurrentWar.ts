@@ -1,6 +1,6 @@
 import {
     isTheTimeCloseTo,
-    createMSecByMinutes
+    parseDateByCocApiTimeStr
 } from "../infrastructure/timeCalculator";
 
 export interface WarMember {
@@ -84,10 +84,10 @@ export class CurrentWar {
             })
             .join("");
 
-    createWarPostBody = () => this.warInfoText + this.warMemberText();
+    createWarPostBody = () => this.warInfoText() + this.warMemberText();
 
     private warInfoText = () =>
-        CurrentWar.warInfoText(new Date(this.startTime));
+        CurrentWar.warInfoText(parseDateByCocApiTimeStr(this.startTime));
 
     private static warInfoText = (startTime: Date) =>
         `\n開戦日時: ${startTime.getMonth() + 1}月${startTime.getDate()}日` +
