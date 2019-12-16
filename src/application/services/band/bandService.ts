@@ -1,43 +1,44 @@
 import { CurrentWar } from "../../../domain/CurrentWar";
 import { ClanEntity } from "../../../domain/model/clan/Clan";
 import { BandApi } from "../../../infrastructure/http/bandApi";
-import { BandEntity } from "../../../domain/model/clan/Band";
 import { $log } from "ts-log-debug";
+import { sleep } from "../../../infrastructure/sleep";
 
 export class BandService {
     private postKey?: string;
     private bandKey: string;
     private bandApi: BandApi;
+    private clanEntity: ClanEntity;
 
-    constructor(band: BandEntity) {
-        this.postKey = band.postKey;
-        this.bandKey = band.bandKey;
-        this.bandApi = new BandApi(band.accessToken);
+    constructor(clanEntity: ClanEntity) {
+        this.clanEntity = clanEntity;
+        this.postKey = clanEntity.band!.postKey;
+        this.bandKey = clanEntity.band!.bandKey;
+        this.bandApi = new BandApi(clanEntity.band!.accessToken);
     }
 
-    attackAlearm = async (war: CurrentWar, clanEntity: ClanEntity) => {
+    attackAlearm = async (war: CurrentWar) => {
         if (war.isCloseToStartOfPrepare()) await this.deletePost();
         if (war.isCloseToStart())
-            await this.createPostAndSave(war.createWarPostBody(), clanEntity);
+            await this.createPostAndSave(war.createWarPostBody());
         const message = war.alertMessage([1, 3, 6, 12, 24]);
         if (message == "") return;
-        await this.pushComment(message);
+        await this.pushComment(message).catch(() => this.refreshPost(war));
     };
 
-    createPostAndSave = async (postBody: string, clanEntity: ClanEntity) => {
-        clanEntity.band!.postKey = (
+    createPostAndSave = async (postBody: string) => {
+        this.clanEntity.band!.postKey = (
             await this.createPost(postBody)
         ).result_data.post_key;
-        await clanEntity.save();
+        await this.clanEntity.save();
     };
 
-    refreshPost = async (war: CurrentWar, clan: ClanEntity) => {
-        await this.deletePost();
-        const postResponse = await this.createPost(war.createWarPostBody());
-        $log.debug(postResponse);
-        $log.debug("post created");
-        clan.band!.postKey = postResponse.result_data.post_key;
-        await clan.save();
+    refreshPost = async (war: CurrentWar) => {
+        await this.deletePost().catch(() =>
+            $log.error("The post was not deleted.")
+        );
+        await sleep(15);
+        await this.createPostAndSave(war.createWarPostBody());
     };
 
     pushComment = (message: string) =>

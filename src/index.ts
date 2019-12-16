@@ -20,8 +20,8 @@ export const checkClanWarStatus = async () => {
 };
 export const attackAlarm = async () => {
     try {
-        $log.info(await connect());
-        $log.info(await new CurrentWarService().attackAlarm());
+        await connect();
+        await new CurrentWarService().attackAlarm();
     } catch (error) {
         $log.fatal(error);
     }
@@ -36,16 +36,16 @@ export const attackAlarm = async () => {
 //         $log.fatal(error);
 //     }
 // };
-// export const refreshPost = async () => {
-//     try {
-//         await startNatgw();
-//         await connect();
-//         await new CurrentWarService().refreshPostDirect();
-//         await stopNatgw();
-//     } catch (error) {
-//         $log.fatal(error);
-//     }
-// };
+
+// TODO: remove
+export const refreshPost = async () => {
+    try {
+        await connect();
+        await new CurrentWarService().refreshPost();
+    } catch (error) {
+        $log.fatal(error);
+    }
+};
 
 export const startNatGateway = async () => {
     try {

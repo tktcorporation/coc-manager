@@ -28,7 +28,7 @@ export class BandEntity extends BaseEntity {
         clan => clan.band
     )
     @JoinColumn()
-    public clan?: ClanEntity;
+    public clan!: ClanEntity;
 
     constructor(accessToken: string, bandkey: string) {
         super();
