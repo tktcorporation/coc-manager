@@ -73,6 +73,4 @@ export class Clan {
         this.description = result.description;
         this.badgeUrls = result.badgeUrls;
     }
-    newByClantag = async (clanTag: string) =>
-        new Clan(await CocApi.getClan(clanTag));
 }

@@ -1,7 +1,4 @@
-import {
-    isTheTimeCloseTo,
-    parseDateByCocApiTimeStr
-} from "../infrastructure/timeCalculator";
+import { WarTime } from "@src/domain/currentWar/WarTime";
 
 export interface WarMember {
     tag: string;
@@ -57,51 +54,47 @@ export class CurrentWar {
     public readonly clan: WarClan;
     public readonly teamSize: number;
     public readonly opponent: WarClan;
-    public readonly startTime: string;
+    public readonly time: WarTime;
     public readonly state: string;
-    public readonly endTime: string;
     public readonly preparationStartTime: string;
 
     constructor(response: CurrentWarResponse) {
         this.clan = response.clan;
         this.teamSize = response.teamSize;
         this.opponent = response.opponent;
-        this.startTime = response.startTime;
+        this.time = new WarTime(
+            response.startTime,
+            response.endTime,
+            TIME_DIFFERENCE_TO_UTC
+        );
         this.state = response.state;
-        this.endTime = response.endTime;
         this.preparationStartTime = response.preparationStartTime;
     }
 
-    isCloseToStart = () => this.isCloseTo(WAR_HOURS + 1);
+    isCloseToStart = () => this.time.start.isCloseTo(WAR_HOURS + 1);
 
     isCloseToStartOfPrepare = () =>
-        this.isCloseTo(WAR_HOURS + PREPARE_HOURS - 1);
+        this.time.start.isCloseTo(WAR_HOURS + PREPARE_HOURS - 1);
 
     alertMessage = (alerthours: number[]) =>
         alerthours
             .map(hours => {
-                if (this.isCloseTo(hours)) CurrentWar.createAlertMessage(hours);
+                if (this.time.end.isCloseTo(hours))
+                    CurrentWar.createAlertMessage(hours);
             })
             .join("");
 
     createWarPostBody = () => this.warInfoText() + this.warMemberText();
 
     private warInfoText = () =>
-        CurrentWar.warInfoText(parseDateByCocApiTimeStr(this.startTime));
-
-    private static warInfoText = (startTime: Date) =>
-        `\n開戦日時: ${startTime.getMonth() + 1}月${startTime.getDate()}日` +
-        `${startTime.getHours() +
-            TIME_DIFFERENCE_TO_UTC}時${startTime.getMinutes()}分` +
+        `\n開戦日時: ${this.time.startDateStr()}` +
+        `${this.time.start.getHours() +
+            TIME_DIFFERENCE_TO_UTC}時${this.time.start.getMinutes()}分` +
         `\n`;
 
-    private warMemberText = () => CurrentWar.warMemberText(this.clan.members);
-
-    private static warMemberText = (members: WarMember[]) =>
-        `参加メンバー:` + members.map(member => `\n・${member.name}`).join("");
-
-    private isCloseTo = (hours: number) =>
-        isTheTimeCloseTo(hours, Date.parse(this.endTime));
+    private warMemberText = () =>
+        `参加メンバー:` +
+        this.clan.members.map(member => `\n・${member.name}`).join("");
 
     private static createAlertMessage = (hour: number) =>
         `\n終戦まで残り約${hour}時間`;
