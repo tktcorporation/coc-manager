@@ -15,17 +15,18 @@
     ],
     "license": "MIT",
     "devDependencies": {
-        "source-map-support": "^0.5.12",
-        "tslint": "^5.20.1",
-        "ts-log-debug": "^5.1.0",
-        "@types/dotenv": "^6.1.1",
         "@types/aws-lambda": "^8.10.46",
+        "@types/dotenv": "^6.1.1",
         "@types/jest": "^25.1.5",
         "@types/node": "^12.12.29",
         "jest": "^25.2.6",
+        "source-map-support": "^0.5.12",
         "ts-jest": "^25.3.0",
         "ts-loader": "^6.2.2",
+        "ts-log-debug": "^5.1.0",
         "ts-node": "^8.7.0",
+        "tslint": "^5.20.1",
+        "typeorm": "^0.2.24",
         "typescript": "^3.8.3",
         "webpack": "^4.42.1",
         "webpack-cli": "^3.3.11"
@@ -41,7 +42,6 @@
         "promise-mysql": "^4.1.0",
         "querystring": "^0.2.0",
         "reflect-metadata": "^0.1.13",
-        "typeorm": "^0.2.18",
         "web-request": "^1.0.7"
     }
 }
