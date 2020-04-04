@@ -1,7 +1,7 @@
 import { CocApi } from "../../../infrastructure/http/cocApi";
 import { LineNotify } from "../../../infrastructure/http/lineNotifyApi";
 import { $log } from "ts-log-debug";
-import { ClanEntity } from "../../../domain/model/clan/Clan";
+import { ClanEntity } from "../../../dao/clan/Clan";
 import { CurrentWar } from "../../../domain/CurrentWar";
 import { BandService } from "../band/bandService";
 

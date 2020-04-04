@@ -1,5 +1,5 @@
 import { CurrentWar } from "../../../domain/CurrentWar";
-import { ClanEntity } from "../../../domain/model/clan/Clan";
+import { ClanEntity } from "../../../dao/clan/Clan";
 import { BandApi } from "../../../infrastructure/http/bandApi";
 import { $log } from "ts-log-debug";
 import { sleep } from "../../../infrastructure/sleep";
