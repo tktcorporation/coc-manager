@@ -1,6 +1,6 @@
-import $log from "./infrastructure/logger";
-import { ConnectionManager } from "./infrastructure/connectionManager";
-import { CurrentWarService } from "./application/services/clan/checkCurrentWar";
+import $log from "@src/infrastructure/logger";
+import { ConnectionManager } from "@src/infrastructure/connectionManager";
+import { CurrentWarService } from "@src/application/services/clan/checkCurrentWar";
 import {
     stopNatgw,
     startNatgw
