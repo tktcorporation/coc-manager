@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "description": "API with Typescript.",
     "scripts": {
-        "build": "tsc",
+        "build": "webpack",
+        "test": "jest",
         "lint": "tslint 'src/**/*.ts'",
         "db:migrate": "ts-node $(npm bin)/typeorm migration:run"
     },
@@ -14,14 +15,23 @@
     ],
     "license": "MIT",
     "devDependencies": {
-        "@types/aws-lambda": "^8.10.31",
-        "@types/node": "^12.7.2",
+        "@types/aws-lambda": "^8.10.46",
+        "@types/dotenv": "^6.1.1",
+        "@types/jest": "^25.1.5",
+        "@types/node": "^12.12.29",
+        "jest": "^25.2.6",
         "source-map-support": "^0.5.12",
+        "ts-jest": "^25.3.0",
+        "ts-loader": "^6.2.2",
+        "ts-log-debug": "^5.1.0",
+        "ts-node": "^8.7.0",
         "tslint": "^5.20.1",
-        "typescript": "^3.7.3"
+        "typeorm": "^0.2.24",
+        "typescript": "^3.8.3",
+        "webpack": "^4.42.1",
+        "webpack-cli": "^3.3.11"
     },
     "dependencies": {
-        "@types/dotenv": "^6.1.1",
         "aws-sdk": "^2.504.0",
         "axios": "^0.19.0",
         "clash-of-clans-api": "^0.6.3",
@@ -32,9 +42,6 @@
         "promise-mysql": "^4.1.0",
         "querystring": "^0.2.0",
         "reflect-metadata": "^0.1.13",
-        "ts-log-debug": "^5.1.0",
-        "tsc": "^1.20150623.0",
-        "typeorm": "^0.2.18",
         "web-request": "^1.0.7"
     }
 }

@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "rootDir": ".",
+        "outDir": "./dist",
+        "lib": ["es5", "es6"],
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "types": ["node", "jest"],
+        "esModuleInterop": true,
+        "inlineSourceMap": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+        "moduleResolution": "node"
+    },
+    "exclude": ["node_modules", "build", "dist"],
+    "extends": "./tsconfig.paths.json"
+}

@@ -1,6 +1,7 @@
-import { attackAlarm } from ".";
+import { attackAlarm, refreshPost } from ".";
 
 const main = async () => {
+    await refreshPost();
     await attackAlarm();
     process.exit();
 };
