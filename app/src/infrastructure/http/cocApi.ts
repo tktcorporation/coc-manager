@@ -1,31 +1,29 @@
-import Axios from "axios";
+import Axios, { AxiosInstance } from "axios";
 import { ClanResponse } from "../../domain/Clan";
-import { CurrentWar, CurrentWarResponse } from "../../domain/CurrentWar";
-
-// tslint:disable-next-line: max-line-length
-const token = process.env.COC_API_TOKEN!;
+import { CurrentWarResponse } from "../../domain/currentWar/CurrentWar";
 
 export class CocApi {
-    static axiosInstance = Axios.create({
-        baseURL: "https://api.clashofclans.com/v1",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-        }
-    });
+    static createAxiosInstance = (token: string) =>
+        Axios.create({
+            baseURL: "https://api.clashofclans.com/v1",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
 
-    readonly apiToken: string;
+    axiosInstance: AxiosInstance;
 
     constructor(apiToken: string) {
-        this.apiToken = apiToken;
+        this.axiosInstance = CocApi.createAxiosInstance(apiToken);
     }
 
     getClanByTag = async (tag: string): Promise<ClanResponse> => {
         const clan: ClanResponse = (
-            await CocApi.axiosInstance.get(`/clans/%23${tag}`)
+            await this.axiosInstance.get(`/clans/%23${tag}`)
         ).data;
         return clan;
     };
     getClanWarByTag = async (tag: string): Promise<CurrentWarResponse> =>
-        (await CocApi.axiosInstance.get(`/clans/%23${tag}/currentwar`)).data;
+        (await this.axiosInstance.get(`/clans/%23${tag}/currentwar`)).data;
 }
