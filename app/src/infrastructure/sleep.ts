@@ -1,6 +1,6 @@
-export const sleep = (msec: number) =>
+export const sleep = (sec: number) =>
     new Promise(function(resolve) {
         setTimeout(function() {
             resolve();
-        }, msec);
+        }, sec * 1000);
     });

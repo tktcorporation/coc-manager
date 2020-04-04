@@ -1,60 +1,46 @@
-default: install build validate test
+PROJECT_NAME=coc-manager
+AWS_REGION=ap-northeast-1
+ENV=dev
+
+default:
+	cd ./app && make
 
 validate:
 	sam validate
 
-install:
-	npm install
-
-test:
-
-integration-test:
-	# jest src/integrationTests
-
-build:
-	npm run build
-
-clean:
-	rm -rf ./dist
-	rm -f ./handler.zip
-	rm -f ./packaged.yaml
-	rm -rf ./node_modules
-
-bundle:
-	echo "package src and modules into zipped handler..."
-	rm -rf node_modules
-	npm install --production
-	cp -R node_modules dist && cd dist && rm -rf tests && zip -r -q ../handler.zip .
-
-package: bundle
+package:
 	echo "package cloudformation template..."
 	aws cloudformation package \
-		--template-file template.yaml \
-		--output-template-file packaged.yaml \
-		--s3-bucket "${S3_BUCKET}" \
+		--template-file template.yml \
+		--output-template-file packaged.yml \
+		--s3-bucket "${PROJECT_NAME}-${ENV}" \
 		--s3-prefix sam
 
 deploy:
-	echo "deploy stack ${STACK_NAME}..."
+	echo "deploy stack ${PROJECT_NAME}-${ENV}..."
 	sam deploy \
-		--template-file packaged.yaml \
-		--stack-name "${STACK_NAME}" \
-		--capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
-		--parameter-overrides ${ENV_PARAMS}
+		--template-file packaged.yml \
+		--stack-name "${PROJECT_NAME}-${ENV}" \
+		--capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
-deploy-stack: clean install build validate package deploy
+local-package: validate
+	cd ./app && make package
 
-local-package: clean install validate build bundle
+deploy-stack: create-s3-bucket local-package package deploy
 
 local-api: local-package
-	sam local start-api --debug --docker-network coc-manager_app-net --env-vars "env/local.env.json"
+	sam local start-api --debug
+	# --docker-network sam-app-net
 
-build-local-db:
-	echo "initialize docker db..."
-	docker-compose down
-	echo "starting..."
-	docker-compose up -d
+test: validate
+	cd app && make test
 
-migrate-local-db:
-	echo "migrate..."
-	ts-node node_modules/.bin/typeorm migration:run
+create-s3-bucket:
+	aws cloudformation deploy \
+	--parameter-overrides \
+		S3BucketName="${PROJECT_NAME}-${ENV}" \
+	--stack-name "${PROJECT_NAME}-${ENV}-s3" \
+	--template cloudformation/s3.yml \
+	--region ${AWS_REGION} \
+	--no-fail-on-empty-changeset
+
