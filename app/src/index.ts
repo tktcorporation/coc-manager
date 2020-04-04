@@ -6,6 +6,9 @@ import {
     startNatgw
 } from "./application/services/natGateway/NatGatewaySwitchService";
 
+const clanTag = process.env.CLAN_TAG!;
+const token = process.env.COC_API_TOKEN!;
+
 const connect = async () => {
     await ConnectionManager.createConnection();
 };
@@ -13,7 +16,7 @@ const connect = async () => {
 export const checkClanWarStatus = async () => {
     try {
         await connect();
-        await new CurrentWarService().checkStatus();
+        await new CurrentWarService(token, clanTag).checkStatus();
     } catch (error) {
         $log.fatal(error);
     }
@@ -21,7 +24,7 @@ export const checkClanWarStatus = async () => {
 export const attackAlarm = async () => {
     try {
         await connect();
-        await new CurrentWarService().attackAlarm();
+        await new CurrentWarService(token, clanTag).attackAlarm();
     } catch (error) {
         $log.fatal(error);
     }
@@ -41,7 +44,7 @@ export const attackAlarm = async () => {
 export const refreshPost = async () => {
     try {
         await connect();
-        await new CurrentWarService().refreshPost();
+        await new CurrentWarService(token, clanTag).refreshPost();
     } catch (error) {
         $log.fatal(error);
     }

@@ -5,13 +5,9 @@ import { ClanEntity } from "../../../dao/clan/Clan";
 import { CurrentWar } from "../../../domain/currentWar/CurrentWar";
 import { BandService } from "../band/bandService";
 
-const clanTag = process.env.CLAN_TAG!;
-// tslint:disable-next-line: max-line-length
-const token = process.env.COC_API_TOKEN!;
-
 export class CurrentWarService {
     cocApi: CocApi;
-    constructor(public token: string, public clanTag: string) {
+    constructor(token: string, public clanTag: string) {
         this.cocApi = new CocApi(token);
     }
     checkStatus = async () => {
