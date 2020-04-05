@@ -1,3 +1,6 @@
+import { Band } from "./Band";
+
 export class ClanStore {
-    constructor(public tag: string) {}
+    band?: Band;
+    constructor(public tag: string, band?: Band) {}
 }

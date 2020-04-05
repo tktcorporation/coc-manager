@@ -12,7 +12,7 @@ import { ClanEntity } from "./Clan";
 @Entity({ name: "band" })
 export class BandEntity extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
-    public readonly id?: PrimaryGeneratedColumnUUIDOptions;
+    public readonly id?: string;
 
     @Column()
     public accessToken: string;

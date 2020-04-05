@@ -1,7 +1,8 @@
 export class Band {
     constructor(
+        public readonly id: string,
         public readonly accessToken: string,
-        public postKey: string,
-        public bandKey: string
+        public bandKey: string,
+        public postKey?: string
     ) {}
 }
