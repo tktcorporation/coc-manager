@@ -1,4 +1,4 @@
-import { CurrentWar } from "../../../domain/CurrentWar";
+import { CurrentWar } from "../../../domain/currentWar/CurrentWar";
 import { ClanEntity } from "../../../dao/clan/Clan";
 import { BandApi } from "../../../infrastructure/http/bandApi";
 import { $log } from "ts-log-debug";
