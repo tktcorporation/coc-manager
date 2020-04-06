@@ -71,7 +71,7 @@ export class CurrentWar {
         this.preparationStartTime = response.preparationStartTime;
     }
 
-    isInWar = this.state !== "";
+    isInWar = this.state !== "notInWar";
 
     isCloseToStart = () => this.time.start.isCloseTo(WAR_HOURS + 1);
 
