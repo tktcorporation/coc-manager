@@ -4,7 +4,7 @@ import {
     stopNatgw,
     startNatgw
 } from "./application/services/natGateway/NatGatewaySwitchService";
-import { AttackAlarm } from "./application/usecase/attackAlearm";
+import { AttackAlarm } from "./application/usecase/attackAlarm";
 
 const clanTag = process.env.CLAN_TAG!;
 const token = process.env.COC_API_TOKEN!;
