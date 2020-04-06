@@ -29,7 +29,9 @@
         "typeorm": "^0.2.24",
         "typescript": "^3.8.3",
         "webpack": "^4.42.1",
-        "webpack-cli": "^3.3.11"
+        "webpack-cli": "^3.3.11",
+        "minimist": "^1.2.5",
+        "mkdirp": "^1.0.4"
     },
     "dependencies": {
         "aws-sdk": "^2.504.0",
