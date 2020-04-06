@@ -1,10 +1,10 @@
 import $log from "@src/infrastructure/logger";
 import { ConnectionManager } from "@src/infrastructure/connectionManager";
-import { CurrentWarService } from "@src/application/services/coc/clan/checkCurrentWar";
 import {
     stopNatgw,
     startNatgw
 } from "./application/services/natGateway/NatGatewaySwitchService";
+import { AttackAlarm } from "./application/usecase/attackAlearm";
 
 const clanTag = process.env.CLAN_TAG!;
 const token = process.env.COC_API_TOKEN!;
@@ -16,7 +16,7 @@ const connect = async () => {
 export const checkClanWarStatus = async () => {
     try {
         await connect();
-        await new CurrentWarService(token, clanTag).checkStatus();
+        await AttackAlarm.checkStatus(token, clanTag);
     } catch (error) {
         $log.fatal(error);
     }
@@ -24,7 +24,8 @@ export const checkClanWarStatus = async () => {
 export const attackAlarm = async () => {
     try {
         await connect();
-        await new CurrentWarService(token, clanTag).attackAlarm();
+        await AttackAlarm.toLine(token, clanTag);
+        await AttackAlarm.toBand(token, clanTag);
     } catch (error) {
         $log.fatal(error);
     }
@@ -44,7 +45,7 @@ export const attackAlarm = async () => {
 export const refreshPost = async () => {
     try {
         await connect();
-        await new CurrentWarService(token, clanTag).refreshPost();
+        await AttackAlarm.refreshPost(token, clanTag);
     } catch (error) {
         $log.fatal(error);
     }
