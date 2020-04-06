@@ -11,9 +11,10 @@ export module AttackAlarm {
         const currentWar = new CurrentWar(
             await cocApi.getClanWarByTag(clanTag)
         );
+
         if (!currentWar.isInWar) return;
         const message = currentWar.alertMessage([1, 3, 6, 12, 24]);
-        if (message == "") return;
+        if (!message) return;
         await LineNotify.post(message);
     };
 
@@ -24,7 +25,7 @@ export module AttackAlarm {
         );
         if (!currentWar.isInWar) return;
         const message = currentWar.alertMessage([1, 3, 6, 12, 24]);
-        if (message == "") return;
+        if (!message) return;
 
         const clan = await new ClanStoreRepository().getByTag(clanTag);
         if (!clan.band) return;

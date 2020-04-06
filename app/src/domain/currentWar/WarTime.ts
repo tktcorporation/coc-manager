@@ -3,10 +3,19 @@ import { Time } from "@src/domain/Time";
 export class WarTime {
     public readonly start: Time;
     public readonly end: Time;
+    public readonly preparationStartTime: Time;
     public timeZone: number;
-    constructor(startTimeStr: string, endTimeStr: string, timeZone: number) {
+    constructor(
+        startTimeStr: string,
+        endTimeStr: string,
+        preparationStartTime: string,
+        timeZone: number
+    ) {
         this.start = WarTime.parseByCocApiTimeStr(startTimeStr);
         this.end = WarTime.parseByCocApiTimeStr(endTimeStr);
+        this.preparationStartTime = WarTime.parseByCocApiTimeStr(
+            preparationStartTime
+        );
         this.timeZone = timeZone;
     }
     /**
