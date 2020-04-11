@@ -5,5 +5,8 @@ const main = async () => {
 };
 
 main()
-    .then(() => console.log("completed"))
+    .then(() => {
+        console.log("completed");
+        process.exit();
+    })
     .catch((e) => console.log(e));
