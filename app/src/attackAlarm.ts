@@ -2,7 +2,8 @@ import { attackAlarm } from ".";
 
 const main = async () => {
     await attackAlarm();
-    process.exit();
 };
 
-console.log(main());
+main()
+    .then(() => console.log("completed"))
+    .catch((e) => console.log(e));
