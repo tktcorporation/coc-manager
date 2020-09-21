@@ -1,4 +1,4 @@
-import { BandEntity } from "@src/dao/clan/Band";
+import { BandEntity } from "@src/infrastructure/dao/clan/Band";
 import { Band } from "@src/domain/Band";
 
 export class BandRepository {

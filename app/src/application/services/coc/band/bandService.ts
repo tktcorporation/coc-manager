@@ -3,7 +3,7 @@ import { BandApi } from "../../../../infrastructure/http/bandApi";
 import { $log } from "ts-log-debug";
 import { sleep } from "../../../../infrastructure/sleep";
 import { Band } from "@src/domain/Band";
-import { BandRepository } from "@src/repository/BandRepository";
+import { BandRepository } from "@src/application/repository/BandRepository";
 
 export class BandService {
     bandApi: BandApi;

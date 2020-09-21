@@ -1,4 +1,4 @@
-import { ClanEntity } from "@src/dao/clan/Clan";
+import { ClanEntity } from "@src/infrastructure/dao/clan/Clan";
 import { ClanStore } from "@src/domain/ClanStore";
 import { Band } from "@src/domain/Band";
 

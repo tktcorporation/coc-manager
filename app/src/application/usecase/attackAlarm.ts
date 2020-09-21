@@ -2,7 +2,7 @@ import { LineNotifyService } from "../services/coc/lineNotifyService";
 import { BandService } from "../services/coc/band/bandService";
 import { CocApi } from "@src/infrastructure/http/cocApi";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
-import { ClanStoreRepository } from "@src/repository/ClanStoreRepository";
+import { ClanStoreRepository } from "@src/application/repository/ClanStoreRepository";
 import { LineNotify } from "@src/infrastructure/http/lineNotifyApi";
 
 export module AttackAlarm {
