@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { BandEntity } from "../../domain/model/clan/Band";
+import { BandEntity } from "../../dao/clan/Band";
 
 const band2 = Axios.create({
     baseURL: "https://openapi.band.us/v2"

@@ -1,9 +1,9 @@
 import dbconfig from "./config";
 import { ConnectionOptions } from "typeorm";
-import { MemberEntity } from "../../domain/model/clan/Member";
-import { ClanEntity } from "../../domain/model/clan/Clan";
-import { WarEntity } from "../../domain/model/clan/War";
-import { BandEntity } from "../../domain/model/clan/Band";
+import { MemberEntity } from "../../dao/clan/Member";
+import { ClanEntity } from "../../dao/clan/Clan";
+import { WarEntity } from "../../dao/clan/War";
+import { BandEntity } from "../../dao/clan/Band";
 
 export const options: ConnectionOptions = {
     type: "mysql",

@@ -2,10 +2,13 @@ const path = require("path");
 
 module.exports = {
     mode: "production",
-    entry: path.resolve(__dirname, "src/index.ts"),
+    entry: {
+        index: "./src/index.ts",
+        attackAlarm: "./src/attackAlarm.ts"
+    },
     output: {
         path: path.resolve(__dirname, "dist/"),
-        filename: "index.js",
+        filename: "[name].js",
         libraryTarget: "umd"
     },
     externals: {
