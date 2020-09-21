@@ -1,6 +1,7 @@
 import Axios, { AxiosInstance } from "axios";
 import { ClanResponse } from "../../domain/Clan";
 import { CurrentWarResponse } from "../../domain/currentWar/CurrentWar";
+import { $log } from "ts-log-debug";
 
 export class CocApi {
     static createAxiosInstance = (token: string) =>
@@ -24,6 +25,11 @@ export class CocApi {
         ).data;
         return clan;
     };
-    getClanWarByTag = async (tag: string): Promise<CurrentWarResponse> =>
-        (await this.axiosInstance.get(`/clans/%23${tag}/currentwar`)).data;
+    getClanWarByTag = async (tag: string): Promise<CurrentWarResponse> => {
+        const result = (
+            await this.axiosInstance.get(`/clans/%23${tag}/currentwar`)
+        ).data;
+        $log.debug(result);
+        return result;
+    };
 }

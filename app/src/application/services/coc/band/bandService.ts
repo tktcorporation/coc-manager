@@ -15,7 +15,8 @@ export class BandService {
         this.band.postKey = (
             await this.createPost(postBody)
         ).result_data.post_key;
-        new BandRepository().update(this.band);
+        await new BandRepository().update(this.band);
+        $log.info("success createPostAndSave");
     };
 
     refreshPost = async (war: CurrentWar) => {
@@ -24,10 +25,13 @@ export class BandService {
         );
         await sleep(15);
         await this.createPostAndSave(war.createWarPostBody());
+        $log.info("success refreshPost");
     };
 
     pushComment = (message: string) =>
-        this.bandApi.pushComment(this.band.bandKey, this.band.postKey, message);
+        this.bandApi
+            .pushComment(this.band.bandKey, this.band.postKey, message)
+            .then(() => $log.info("success pushComment"));
 
     private createPost = (postBody: string) =>
         this.bandApi.createPost(this.band.bandKey, postBody);
@@ -40,6 +44,8 @@ export class BandService {
 
     deletePost = async () => {
         if (!this.band.postKey) return;
-        return this.bandApi.deletePost(this.band.bandKey, this.band.postKey);
+        this.bandApi
+            .deletePost(this.band.bandKey, this.band.postKey)
+            .then(() => $log.info("success deletePost"));
     };
 }
