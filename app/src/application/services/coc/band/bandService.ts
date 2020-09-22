@@ -3,19 +3,19 @@ import { BandApi } from "../../../../infrastructure/http/bandApi";
 import { $log } from "ts-log-debug";
 import { sleep } from "../../../../infrastructure/sleep";
 import { Band } from "@src/domain/Band";
-import { BandRepository } from "@src/application/repository/BandRepository";
+import { BandRepository } from "@src/infrastructure/dao/BandDao";
 
 export class BandService {
     bandApi: BandApi;
-    constructor(public band: Band) {
+    constructor(private band: Band, private repository: BandRepository) {
         this.bandApi = new BandApi(band.accessToken);
     }
 
     createPostAndSave = async (postBody: string) => {
         this.band.postKey = (
-            await this.createPost(postBody)
+            await this.bandApi.createPost(this.band, postBody)
         ).result_data.post_key;
-        await new BandRepository().update(this.band);
+        await this.repository.update(this.band);
         $log.info("success createPostAndSave");
     };
 
@@ -32,15 +32,6 @@ export class BandService {
         this.bandApi
             .pushComment(this.band.bandKey, this.band.postKey, message)
             .then(() => $log.info("success pushComment"));
-
-    private createPost = (postBody: string) =>
-        this.bandApi.createPost(this.band.bandKey, postBody);
-
-    static createPost = (band: Band, postBody: string) =>
-        new BandApi(band.accessToken).createPost(band.bandKey, postBody);
-
-    static deletePost = async (band: Band) =>
-        new BandApi(band.accessToken).deletePost(band.bandKey, band.postKey!);
 
     deletePost = async () => {
         if (!this.band.postKey) return;

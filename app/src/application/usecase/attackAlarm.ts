@@ -4,12 +4,17 @@ import { CocApi } from "@src/infrastructure/http/cocApi";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { ClanStoreRepository } from "@src/application/repository/ClanStoreRepository";
 import { LineNotify } from "@src/infrastructure/http/lineNotifyApi";
+import { ClanTag } from "@src/domain/ClanTag";
 
-export module AttackAlarm {
-    export const toLine = async (cocApiToken: string, clanTag: string) => {
-        const cocApi = new CocApi(cocApiToken);
+export class AttackAlarm {
+    constructor(
+        private clanStoreRepository: ClanStoreRepository,
+        private bandService: BandService,
+        private cocApi: CocApi
+    ) {}
+    toLine = async (clanTag: ClanTag) => {
         const currentWar = new CurrentWar(
-            await cocApi.getClanWarByTag(clanTag)
+            await this.cocApi.getClanWarByTag(clanTag)
         );
 
         if (!currentWar.isInWar) return;
@@ -18,42 +23,40 @@ export module AttackAlarm {
         await LineNotify.post(message);
     };
 
-    export const toBand = async (cocApiToken: string, clanTag: string) => {
-        const cocApi = new CocApi(cocApiToken);
+    toBand = async (clanTag: ClanTag) => {
         const currentWar = new CurrentWar(
-            await cocApi.getClanWarByTag(clanTag)
+            await this.cocApi.getClanWarByTag(clanTag)
         );
         if (!currentWar.isInWar) return;
         const message = currentWar.alertMessage([1, 3, 6, 12, 24]);
         if (!message) return;
 
-        const clan = await new ClanStoreRepository().getByTag(clanTag);
+        const clan = await this.clanStoreRepository.getByTag(clanTag);
         if (!clan.band) return;
 
-        const bandService = new BandService(clan.band);
         if (currentWar.isCloseToStartOfPrepare())
-            await bandService.deletePost();
+            await this.bandService.deletePost();
         if (currentWar.isCloseToStart())
-            await bandService.createPostAndSave(currentWar.createWarPostBody());
-        await bandService
+            await this.bandService.createPostAndSave(
+                currentWar.createWarPostBody()
+            );
+        await this.bandService
             .pushComment(message)
-            .catch(() => bandService.refreshPost(currentWar));
+            .catch(() => this.bandService.refreshPost(currentWar));
     };
 
-    export const refreshPost = async (cocApiToken: string, clanTag: string) => {
-        const clan = await new ClanStoreRepository().getByTag(clanTag);
+    refreshPost = async (clanTag: ClanTag) => {
+        const clan = await this.clanStoreRepository.getByTag(clanTag);
         if (!clan.band) return;
-        const cocApi = new CocApi(cocApiToken);
         const currentWar = new CurrentWar(
-            await cocApi.getClanWarByTag(clanTag)
+            await this.cocApi.getClanWarByTag(clanTag)
         );
-        await new BandService(clan.band).refreshPost(currentWar);
+        await this.bandService.refreshPost(currentWar);
     };
 
-    export const checkStatus = async (cocApiToken: string, clanTag: string) => {
-        const cocApi = new CocApi(cocApiToken);
+    checkStatus = async (clanTag: ClanTag) => {
         const currentWar = new CurrentWar(
-            await cocApi.getClanWarByTag(clanTag)
+            await this.cocApi.getClanWarByTag(clanTag)
         );
         await LineNotify.post(currentWar.state);
     };
