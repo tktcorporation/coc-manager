@@ -1,5 +1,6 @@
 import Axios from "axios";
-import { BandEntity } from "../dao/clan/Band";
+import { BandEntity } from "../dao/clan/entity/Band";
+import { Band } from "@src/domain/Band";
 
 const band2 = Axios.create({
     baseURL: "https://openapi.band.us/v2",
@@ -42,14 +43,14 @@ export class BandApi {
         });
 
     public createPost = async (
-        bandkey: BandEntity["bandKey"],
+        band: Band,
         content: string
     ): Promise<CreatePostResponse> =>
         (
             await band22.post(`/band/post/create`, null, {
                 params: {
                     access_token: this.accessToken,
-                    band_key: bandkey,
+                    band_key: band.bandKey,
                     content,
                     do_push: false,
                 },
