@@ -1,7 +1,7 @@
-import { BandEntity } from "@src/dao/clan/Band";
+import { BandEntity } from "@src/infrastructure/dao/clan/entity/Band";
 import { Band } from "@src/domain/Band";
 
-export class BandRepository {
+export class BandRepository implements BandRepository {
     getById = async (id: string) => {
         const result = await BandEntity.findOneOrFail({ id });
         return new Band(

@@ -3,7 +3,7 @@ default: test build
 install:
 	npm install
 
-test: clean install
+test: install
 	npm run test
 
 integration-test:

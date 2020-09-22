@@ -1,16 +1,17 @@
 import Axios from "axios";
-import { BandEntity } from "../../dao/clan/Band";
+import { BandEntity } from "../dao/clan/entity/Band";
+import { Band } from "@src/domain/Band";
 
 const band2 = Axios.create({
-    baseURL: "https://openapi.band.us/v2"
+    baseURL: "https://openapi.band.us/v2",
 });
 
 const band21 = Axios.create({
-    baseURL: "https://openapi.band.us/v2.1"
+    baseURL: "https://openapi.band.us/v2.1",
 });
 
 const band22 = Axios.create({
-    baseURL: "https://openapi.band.us/v2.2"
+    baseURL: "https://openapi.band.us/v2.2",
 });
 
 interface CreatePostResponse {
@@ -37,30 +38,30 @@ export class BandApi {
                 access_token: this.accessToken,
                 band_key: bandkey,
                 post_key: postkey,
-                body: message
-            }
+                body: message,
+            },
         });
 
     public createPost = async (
-        bandkey: BandEntity["bandKey"],
+        band: Band,
         content: string
     ): Promise<CreatePostResponse> =>
         (
             await band22.post(`/band/post/create`, null, {
                 params: {
                     access_token: this.accessToken,
-                    band_key: bandkey,
+                    band_key: band.bandKey,
                     content,
-                    do_push: false
-                }
+                    do_push: false,
+                },
             })
         ).data;
 
     public getBands = () =>
         band21.get(`/bands`, {
             params: {
-                access_token: this.accessToken
-            }
+                access_token: this.accessToken,
+            },
         });
 
     public getPosts = (bandkey: string) =>
@@ -68,8 +69,8 @@ export class BandApi {
             params: {
                 access_token: this.accessToken,
                 band_key: bandkey,
-                locale: "jp_JP"
-            }
+                locale: "jp_JP",
+            },
         });
 
     public deletePost = (bandKey: string, postKey: string) =>
@@ -77,7 +78,7 @@ export class BandApi {
             params: {
                 access_token: this.accessToken,
                 band_key: bandKey,
-                post_key: postKey
-            }
+                post_key: postKey,
+            },
         });
 }

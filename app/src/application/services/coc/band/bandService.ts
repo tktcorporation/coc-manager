@@ -1,21 +1,21 @@
 import { CurrentWar } from "../../../../domain/currentWar/CurrentWar";
 import { BandApi } from "../../../../infrastructure/http/bandApi";
-import { $log } from "ts-log-debug";
+import { $log, Logger } from "ts-log-debug";
 import { sleep } from "../../../../infrastructure/sleep";
 import { Band } from "@src/domain/Band";
-import { BandRepository } from "@src/repository/BandRepository";
+import { BandRepository } from "@src/infrastructure/dao/BandDao";
 
 export class BandService {
     bandApi: BandApi;
-    constructor(public band: Band) {
+    constructor(private band: Band, private repository: BandRepository) {
         this.bandApi = new BandApi(band.accessToken);
     }
 
     createPostAndSave = async (postBody: string) => {
         this.band.postKey = (
-            await this.createPost(postBody)
+            await this.bandApi.createPost(this.band, postBody)
         ).result_data.post_key;
-        await new BandRepository().update(this.band);
+        await this.repository.update(this.band);
         $log.info("success createPostAndSave");
     };
 
@@ -28,19 +28,21 @@ export class BandService {
         $log.info("success refreshPost");
     };
 
-    pushComment = (message: string) =>
+    inWarAndInTimeToNotify = async (currentWar: CurrentWar) => {
+        if (!currentWar.isInWar) return;
+        const message = currentWar.alertMessage([1, 3, 6, 12, 24]);
+        if (message === null) return;
+
+        await this.pushComment(message).catch((e: Error) => {
+            $log.error(e.name);
+            this.refreshPost(currentWar);
+        });
+    };
+
+    private pushComment = (message: string) =>
         this.bandApi
             .pushComment(this.band.bandKey, this.band.postKey, message)
             .then(() => $log.info("success pushComment"));
-
-    private createPost = (postBody: string) =>
-        this.bandApi.createPost(this.band.bandKey, postBody);
-
-    static createPost = (band: Band, postBody: string) =>
-        new BandApi(band.accessToken).createPost(band.bandKey, postBody);
-
-    static deletePost = async (band: Band) =>
-        new BandApi(band.accessToken).deletePost(band.bandKey, band.postKey!);
 
     deletePost = async () => {
         if (!this.band.postKey) return;

@@ -1,9 +1,9 @@
 import dbconfig from "./config";
 import { ConnectionOptions } from "typeorm";
-import { MemberEntity } from "../../dao/clan/Member";
-import { ClanEntity } from "../../dao/clan/Clan";
-import { WarEntity } from "../../dao/clan/War";
-import { BandEntity } from "../../dao/clan/Band";
+import { MemberEntity } from "../dao/clan/entity/Member";
+import { ClanEntity } from "../dao/clan/entity/Clan";
+import { WarEntity } from "../dao/clan/entity/War";
+import { BandEntity } from "../dao/clan/entity/Band";
 
 export const options: ConnectionOptions = {
     type: "mysql",
@@ -18,7 +18,7 @@ export const options: ConnectionOptions = {
         MemberEntity,
         ClanEntity,
         WarEntity,
-        BandEntity
+        BandEntity,
     ],
     // migrations: ['src/db/migrations/**/*.ts'],
     // subscribers: ['src/db/subscribers/**/*.ts'],
@@ -28,5 +28,5 @@ export const options: ConnectionOptions = {
     //     subscribersDir: 'src/db/subscribers',
     // },
     synchronize: false,
-    logging: process.env.NODE_ENV === "production" ? ["error"] : "all"
+    logging: process.env.NODE_ENV === "production" ? ["error"] : "all",
 };
