@@ -1,6 +1,6 @@
 import { CurrentWar } from "../../../../domain/currentWar/CurrentWar";
 import { BandApi } from "../../../../infrastructure/http/bandApi";
-import { $log } from "ts-log-debug";
+import { $log, Logger } from "ts-log-debug";
 import { sleep } from "../../../../infrastructure/sleep";
 import { Band } from "@src/domain/Band";
 import { BandRepository } from "@src/infrastructure/dao/BandDao";
@@ -28,7 +28,18 @@ export class BandService {
         $log.info("success refreshPost");
     };
 
-    pushComment = (message: string) =>
+    inWarAndInTimeToNotify = async (currentWar: CurrentWar) => {
+        if (!currentWar.isInWar) return;
+        const message = currentWar.alertMessage([1, 3, 6, 12, 24]);
+        if (message === null) return;
+
+        await this.pushComment(message).catch((e: Error) => {
+            $log.error(e.name);
+            this.refreshPost(currentWar);
+        });
+    };
+
+    private pushComment = (message: string) =>
         this.bandApi
             .pushComment(this.band.bandKey, this.band.postKey, message)
             .then(() => $log.info("success pushComment"));

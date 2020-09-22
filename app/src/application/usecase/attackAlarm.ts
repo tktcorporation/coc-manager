@@ -5,34 +5,29 @@ import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { ClanStoreRepository } from "@src/application/repository/ClanStoreRepository";
 import { LineNotify } from "@src/infrastructure/http/lineNotifyApi";
 import { ClanTag } from "@src/domain/ClanTag";
+import { ClanWarService } from "../services/coc/ClanWar";
 
 export class AttackAlarm {
     constructor(
         private clanStoreRepository: ClanStoreRepository,
         private bandService: BandService,
-        private cocApi: CocApi
+        private clanWarService: ClanWarService,
+        private cocApi: CocApi,
+        private lineNotufyService: LineNotifyService
     ) {}
-    toLine = async (clanTag: ClanTag) => {
-        const currentWar = new CurrentWar(
-            await this.cocApi.getClanWarByTag(clanTag)
+    toLine = async (
+        clanTag: ClanTag,
+        alertHours: number[] = [1, 3, 6, 12, 24]
+    ) => {
+        const currentWar = await this.clanWarService.getCurrentByTag(clanTag);
+        await this.lineNotufyService.inWarAndInTimeToNotify(
+            currentWar,
+            alertHours
         );
-
-        if (!currentWar.isInWar) return;
-        const message = currentWar.alertMessage([1, 3, 6, 12, 24]);
-        if (!message) return;
-        await LineNotify.post(message);
     };
 
     toBand = async (clanTag: ClanTag) => {
-        const currentWar = new CurrentWar(
-            await this.cocApi.getClanWarByTag(clanTag)
-        );
-        if (!currentWar.isInWar) return;
-        const message = currentWar.alertMessage([1, 3, 6, 12, 24]);
-        if (!message) return;
-
-        const clan = await this.clanStoreRepository.getByTag(clanTag);
-        if (!clan.band) return;
+        const currentWar = await this.clanWarService.getCurrentByTag(clanTag);
 
         if (currentWar.isCloseToStartOfPrepare())
             await this.bandService.deletePost();
@@ -40,9 +35,7 @@ export class AttackAlarm {
             await this.bandService.createPostAndSave(
                 currentWar.createWarPostBody()
             );
-        await this.bandService
-            .pushComment(message)
-            .catch(() => this.bandService.refreshPost(currentWar));
+        await this.bandService.inWarAndInTimeToNotify(currentWar);
     };
 
     refreshPost = async (clanTag: ClanTag) => {

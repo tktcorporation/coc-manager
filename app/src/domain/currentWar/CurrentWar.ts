@@ -86,9 +86,9 @@ export class CurrentWar {
 
     alertMessage = (alerthours: number[]) => {
         const time = this.time;
-        if (!time) return;
+        if (!time) return null;
         return alerthours
-            .map(hours => {
+            .map((hours) => {
                 if (time.end.isCloseTo(hours))
                     CurrentWar.createAlertMessage(hours);
             })
@@ -100,13 +100,14 @@ export class CurrentWar {
     private warInfoText = () =>
         this.time &&
         `\n開戦日時: ${this.time.startDateStr()}` +
-            `${this.time.start.getHours() +
-                TIME_DIFFERENCE_TO_UTC}時${this.time.start.getMinutes()}分` +
+            `${
+                this.time.start.getHours() + TIME_DIFFERENCE_TO_UTC
+            }時${this.time.start.getMinutes()}分` +
             `\n`;
 
     private warMemberText = () =>
         `参加メンバー:` +
-        this.clan.members.map(member => `\n・${member.name}`).join("");
+        this.clan.members.map((member) => `\n・${member.name}`).join("");
 
     private static createAlertMessage = (hour: number) =>
         `\n終戦まで残り約${hour}時間`;
