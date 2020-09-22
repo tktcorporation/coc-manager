@@ -9,6 +9,6 @@ export class LineNotifyService {
         if (!currentWar.isInWar) return;
         const message = currentWar.alertMessage(alertHours);
         if (!message) return;
-        return await new LineNotify().post(message);
+        return await new LineNotify().sendMessage(message);
     };
 }
