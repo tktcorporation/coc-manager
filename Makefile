@@ -3,7 +3,7 @@ AWS_REGION=ap-northeast-1
 ENV=dev
 
 default:
-	cd ./app && make
+	docker-compose run --rm app /bin/bash -c "make"
 
 validate:
 	sam validate
@@ -24,7 +24,7 @@ deploy:
 		--capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
 
 local-package: validate
-	cd ./app && make package
+	docker-compose run --rm app /bin/bash -c "make package"
 
 deploy-stack: create-s3-bucket local-package package deploy
 
@@ -33,7 +33,7 @@ local-api: local-package
 	# --docker-network sam-app-net
 
 test: validate
-	cd app && make test
+	docker-compose run --rm app /bin/bash -c "make test"
 
 create-s3-bucket:
 	aws cloudformation deploy \
