@@ -12,6 +12,7 @@ services:
       - DB_DATABASE=coc
       - DB_USER=root
       - DB_PASSWORD=password
+      - DB_TZ=UTC
       - NODE_ENV=develop
     #   - COC_API_TOKEN=
     #   - LINE_NOTIFY_API_TOKEN=

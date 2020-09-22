@@ -19,7 +19,7 @@ export namespace Config {
     if (!process.env.NODE_ENV) {
         throw new Error("NODE_ENV must be set.");
     }
-    if (!process.env.TZ) {
+    if (!process.env.DB_TZ) {
         throw new Error("TZ must be set.");
     }
     if (!process.env.LINE_NOTIFY_API_TOKEN) {
@@ -29,10 +29,9 @@ export namespace Config {
     export const DB_PORT: string = process.env.DB_PORT;
     export const DB_USER: string = process.env.DB_USER;
     export const DB_PASSWORD: string = process.env.DB_PASSWORD;
-    export const DB_DATABASE_NAME: string = process.env.DB_DATABASE_NAME;
+    export const DB_DATABASE: string = process.env.DB_DATABASE_NAME;
     export const NODE_ENV: string = process.env.NODE_ENV;
-    export const TZ: string = process.env.TZ;
-    export const PORT: string | undefined = process.env.PORT;
+    export const DB_TZ: string = process.env.DB_TZ;
     export const LINE_NOTIFY_API_TOKEN: string =
         process.env.LINE_NOTIFY_API_TOKEN;
 }
