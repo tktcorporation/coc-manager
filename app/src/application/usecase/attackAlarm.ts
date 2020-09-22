@@ -3,7 +3,7 @@ import { BandService } from "../services/coc/band/bandService";
 import { CocApi } from "@src/infrastructure/http/cocApi";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { ClanStoreRepository } from "@src/application/repository/ClanStoreRepository";
-import { LineNotify } from "@src/infrastructure/http/lineNotifyApi";
+import { LineNotify } from "@src/infrastructure/http/line/lineNotifyApi";
 import { ClanTag } from "@src/domain/ClanTag";
 import { ClanWarService } from "../services/coc/ClanWar";
 
@@ -51,6 +51,6 @@ export class AttackAlarm {
         const currentWar = new CurrentWar(
             await this.cocApi.getClanWarByTag(clanTag)
         );
-        await LineNotify.post(currentWar.state);
+        await new LineNotify().sendMessage(currentWar.state);
     };
 }
