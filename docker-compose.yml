@@ -14,8 +14,8 @@ services:
       - DB_PASSWORD=password
       - DB_TZ=UTC
       - NODE_ENV=develop
+      - LINE_NOTIFY_API_TOKEN=${LINE_NOTIFY_API_TOKEN}
     #   - COC_API_TOKEN=
-    #   - LINE_NOTIFY_API_TOKEN=
     #   - CLAN_TAG=
     links:
       - db
