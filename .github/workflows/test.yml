@@ -38,4 +38,4 @@ jobs:
           COC_API_TOKEN: ${{ secrets.COC_API_TOKEN }}
           CLAN_TAG: ${{ secrets.CLAN_TAG }}
           SAM_CLI_TELEMETRY: 0
-        run: make test
+        run: docker-compose run --rm app /bin/bash -c "npm run testci"
