@@ -1,6 +1,6 @@
 {
-    "name": "mobile-api",
-    "version": "1.0.0",
+    "name": "coc-manager",
+    "version": "0.1.1",
     "description": "API with Typescript.",
     "scripts": {
         "build": "webpack",
