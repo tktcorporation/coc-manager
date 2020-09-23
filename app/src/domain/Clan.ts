@@ -1,4 +1,4 @@
-import { CocApi } from "../infrastructure/http/cocApi";
+import { CocApi } from "../infrastructure/http/cocApi/cocApi";
 import { ClanMember } from "./ClanMember";
 export interface ClanResponse {
     tag: string;
