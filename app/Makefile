@@ -6,6 +6,9 @@ install:
 test: install
 	npm run test
 
+testci: install
+	npm run testci
+
 integration-test:
 	# jest src/integrationTests
 

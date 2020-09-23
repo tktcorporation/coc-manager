@@ -24,7 +24,7 @@ export interface WarMember {
     ];
 }
 
-interface WarClan {
+export interface WarClan {
     destructionPercentage: {};
     tag: string;
     name: string;

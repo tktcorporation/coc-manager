@@ -5,6 +5,7 @@
     "scripts": {
         "build": "webpack",
         "test": "jest",
+        "testci": "jest --config=ci-jest.config.js",
         "lint": "tslint 'src/**/*.ts'",
         "db:migrate": "ts-node $(npm bin)/typeorm migration:run"
     },
