@@ -1,0 +1,41 @@
+name: Test
+
+on: pull_request
+
+jobs:
+  sam-test:
+    name: SAM Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test
+        uses: tkt-actions/aws-sam-cli@v1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          SAM_CLI_TELEMETRY: 0
+        with:
+          cmd: sam validate
+
+  node-test:
+    name: Node Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Test
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          LINE_NOTIFY_API_TOKEN: ${{ secrets.LINE_NOTIFY_API_TOKEN }}
+          COC_API_TOKEN: ${{ secrets.COC_API_TOKEN }}
+          CLAN_TAG: ${{ secrets.CLAN_TAG }}
+          SAM_CLI_TELEMETRY: 0
+        run: docker-compose run --rm app /bin/bash -c "npm i && npm run testci"

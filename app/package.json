@@ -1,0 +1,51 @@
+{
+    "name": "coc-manager",
+    "version": "0.1.1",
+    "description": "API with Typescript.",
+    "scripts": {
+        "build": "webpack",
+        "test": "jest",
+        "testci": "jest --config=ci-jest.config.js",
+        "lint": "tslint 'src/**/*.ts'",
+        "db:migrate": "ts-node $(npm bin)/typeorm migration:run"
+    },
+    "keywords": [
+        "node",
+        "typescript",
+        "lambda"
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.46",
+        "@types/dotenv": "^6.1.1",
+        "@types/jest": "^25.1.5",
+        "@types/node": "^12.12.29",
+        "jest": "^25.2.6",
+        "minimist": "^1.2.5",
+        "mkdirp": "^1.0.4",
+        "source-map-support": "^0.5.12",
+        "ts-jest": "^25.3.0",
+        "ts-loader": "^6.2.2",
+        "ts-log-debug": "^5.1.0",
+        "ts-node": "^8.7.0",
+        "tsconfig-paths": "^3.9.0",
+        "tslint": "^5.20.1",
+        "typeorm": "^0.2.24",
+        "typescript": "^3.8.3",
+        "webpack": "^4.42.1",
+        "webpack-cli": "^3.3.11"
+    },
+    "dependencies": {
+        "aws-sdk": "^2.504.0",
+        "axios": "^0.19.0",
+        "clash-of-clans-api": "^0.6.3",
+        "dotenv": "^8.0.0",
+        "form-data": "^2.5.0",
+        "lodash": "^4.17.19",
+        "mysql": "^2.17.1",
+        "promise-mysql": "^4.1.0",
+        "querystring": "^0.2.0",
+        "reflect-metadata": "^0.1.13",
+        "web-request": "^1.0.7"
+    }
+}
