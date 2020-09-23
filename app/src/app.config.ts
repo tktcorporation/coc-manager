@@ -25,6 +25,13 @@ export namespace Config {
     if (!process.env.LINE_NOTIFY_API_TOKEN) {
         throw new Error("LINE_NOTIFY_API_TOKEN must be set.");
     }
+    if (!process.env.CLAN_TAG) {
+        throw new Error("CLAN_TAG must be set.");
+    }
+    if (!process.env.COC_API_TOKEN) {
+        throw new Error("COC_API_TOKEN must be set.");
+    }
+
     export const DB_HOST: string = process.env.DB_HOST;
     export const DB_PORT: string = process.env.DB_PORT;
     export const DB_USER: string = process.env.DB_USER;
@@ -34,4 +41,6 @@ export namespace Config {
     export const DB_TZ: string = process.env.DB_TZ;
     export const LINE_NOTIFY_API_TOKEN: string =
         process.env.LINE_NOTIFY_API_TOKEN;
+    export const CLAN_TAG: string = process.env.CLAN_TAG;
+    export const COC_API_TOKEN: string = process.env.COC_API_TOKEN;
 }
