@@ -1,50 +1,6 @@
 import { WarTime } from "@src/domain/currentWar/WarTime";
-
-export interface WarMember {
-    tag: string;
-    name: string;
-    mapPosition: number;
-    townhallLevel: number;
-    opponentAttacks: number;
-    bestOpponentAttack: {
-        order: number;
-        attackerTag: string;
-        defenderTag: string;
-        stars: number;
-        destructionPercentage: number;
-    };
-    attacks: [
-        {
-            order: number;
-            attackerTag: string;
-            defenderTag: string;
-            stars: number;
-            destructionPercentage: number;
-        }
-    ];
-}
-
-export interface WarClan {
-    destructionPercentage: {};
-    tag: string;
-    name: string;
-    badgeUrls: {};
-    clanLevel: number;
-    attacks: number;
-    stars: number;
-    expEarned: number;
-    members: WarMember[];
-}
-
-export interface CurrentWarResponse {
-    clan: WarClan;
-    teamSize?: number;
-    opponent?: WarClan;
-    startTime?: string;
-    state: string;
-    endTime?: string;
-    preparationStartTime?: string;
-}
+import { Clan } from "../clan/Clan";
+import { WarClan } from "./WarClan";
 
 const WAR_HOURS = 24;
 const PREPARE_HOURS = 23;
@@ -57,22 +13,26 @@ export class CurrentWar {
     public readonly time?: WarTime;
     public readonly state: string;
 
-    constructor(response: CurrentWarResponse) {
-        this.clan = response.clan;
-        this.state = response.state;
+    constructor(args: {
+        clan: WarClan;
+        teamSize?: number;
+        opponent?: WarClan;
+        startTime?: string;
+        state: string;
+        endTime?: string;
+        preparationStartTime?: string;
+    }) {
+        this.clan = args.clan;
+        this.state = args.state;
 
-        this.teamSize = response.teamSize;
-        this.opponent = response.opponent;
-        if (
-            !response.startTime ||
-            !response.endTime ||
-            !response.preparationStartTime
-        )
+        this.teamSize = args.teamSize;
+        this.opponent = args.opponent;
+        if (!args.startTime || !args.endTime || !args.preparationStartTime)
             return;
         this.time = new WarTime(
-            response.startTime,
-            response.endTime,
-            response.preparationStartTime,
+            args.startTime,
+            args.endTime,
+            args.preparationStartTime,
             TIME_DIFFERENCE_TO_UTC
         );
     }
@@ -107,7 +67,7 @@ export class CurrentWar {
 
     private warMemberText = () =>
         `参加メンバー:` +
-        this.clan.members.map((member) => `\n・${member.name}`).join("");
+        this.clan.members.map((member) => `\n・${member.getName()}`).join("");
 
     private static createAlertMessage = (hour: number) =>
         `\n終戦まで残り約${hour}時間`;
