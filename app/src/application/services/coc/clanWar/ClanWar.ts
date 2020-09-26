@@ -1,7 +1,7 @@
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { CocApi } from "@src/infrastructure/http/cocApi/cocApi";
 import { ClanTag } from "@src/domain/ClanTag";
-import { Clan } from "@src/domain/Clan";
+import { Clan } from "@src/domain/clan/Clan";
 
 export interface ICocApi {
     getClanByTag: (tag: ClanTag) => Promise<Clan>;
