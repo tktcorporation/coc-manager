@@ -27,15 +27,19 @@ export class WarTime {
      * hh時mm分
      */
     startTimeStr = () =>
-        `${this.start.getHours() +
-            this.timeZone}時${this.start.getMinutes()}分`;
+        `${
+            this.start.getHours() + this.timeZone
+        }時${this.start.getMinutes()}分`;
     /**
      * mm月dd日 hh時mm分
      */
     strtDateTimeStr = () => `${this.startDateStr()} ${this.startTimeStr()}`;
 
-    static parseByCocApiTimeStr = (str: string) =>
-        Time.parseDateByRegExpMatchArray(cocApiDateArray(str)!);
+    static parseByCocApiTimeStr = (str: string) => {
+        const matched = cocApiDateArray(str);
+        if (matched === null) throw new Error("time format is invalid");
+        return Time.parseDateByRegExpMatchArray(matched);
+    };
 }
 
 const cocApiDateRegex = /([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2})([0-9]{2}).000Z/;
