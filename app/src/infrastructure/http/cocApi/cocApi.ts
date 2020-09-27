@@ -8,6 +8,7 @@ import { ClanMember } from "@src/domain/clan/ClanMember";
 import { League } from "@src/domain/clan/League";
 import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarMember } from "@src/domain/currentWar/WarMember";
+import { WarProperties } from "@src/domain/currentWar/WarProperties";
 
 interface ClanMemberResponse {
     league: {
@@ -81,15 +82,15 @@ export interface WarMemberResponse {
 }
 
 export interface WarClanResponse {
-    destructionPercentage: {};
-    tag: string;
-    name: string;
+    destructionPercentage?: {};
+    tag?: string;
+    name?: string;
     badgeUrls: {};
     clanLevel: number;
     attacks: number;
     stars: number;
-    expEarned: number;
-    members: WarMemberResponse[];
+    expEarned?: number;
+    members?: WarMemberResponse[];
 }
 
 export interface CurrentWarResponse {
@@ -97,7 +98,7 @@ export interface CurrentWarResponse {
     teamSize?: number;
     opponent?: WarClanResponse;
     startTime?: string;
-    state: string;
+    state: "notInWar" | "inWar" | "warEnded";
     endTime?: string;
     preparationStartTime?: string;
 }
@@ -146,43 +147,20 @@ export class CocApi implements ICocApi {
                 `/clans/%23${tag.toString()}/currentwar`
             )
         ).data;
-        // $log.debug(result);
         return new CurrentWar({
-            ...result,
+            state: result.state,
             clan: new WarClan(
                 result.clan.destructionPercentage,
-                new ClanTag(result.clan.tag),
+                result.clan.tag ? new ClanTag(result.clan.tag) : undefined,
                 result.clan.name,
                 result.clan.badgeUrls,
                 result.clan.clanLevel,
                 result.clan.attacks,
                 result.clan.stars,
                 result.clan.expEarned,
-                result.clan.members.map(
-                    (v) =>
-                        new WarMember(
-                            v.tag,
-                            v.name,
-                            v.mapPosition,
-                            v.townhallLevel,
-                            v.opponentAttacks,
-                            v.bestOpponentAttack,
-                            v.attacks
-                        )
-                )
-            ),
-            opponent: !result.opponent
-                ? undefined
-                : new WarClan(
-                      result.opponent.destructionPercentage,
-                      new ClanTag(result.opponent.tag),
-                      result.opponent.name,
-                      result.opponent.badgeUrls,
-                      result.opponent.clanLevel,
-                      result.opponent.attacks,
-                      result.opponent.stars,
-                      result.opponent.expEarned,
-                      result.opponent.members.map(
+                !result.clan.members
+                    ? undefined
+                    : result.clan.members.map(
                           (v) =>
                               new WarMember(
                                   v.tag,
@@ -194,6 +172,44 @@ export class CocApi implements ICocApi {
                                   v.attacks
                               )
                       )
+            ),
+            warProperties: !(
+                result.teamSize &&
+                result.opponent &&
+                result.opponent.tag &&
+                result.opponent.members &&
+                result.startTime &&
+                result.endTime &&
+                result.preparationStartTime
+            )
+                ? undefined
+                : new WarProperties(
+                      result.teamSize,
+                      new WarClan(
+                          result.opponent.destructionPercentage,
+                          new ClanTag(result.opponent.tag),
+                          result.opponent.name,
+                          result.opponent.badgeUrls,
+                          result.opponent.clanLevel,
+                          result.opponent.attacks,
+                          result.opponent.stars,
+                          result.opponent.expEarned,
+                          result.opponent.members.map(
+                              (v) =>
+                                  new WarMember(
+                                      v.tag,
+                                      v.name,
+                                      v.mapPosition,
+                                      v.townhallLevel,
+                                      v.opponentAttacks,
+                                      v.bestOpponentAttack,
+                                      v.attacks
+                                  )
+                          )
+                      ),
+                      result.startTime,
+                      result.endTime,
+                      result.preparationStartTime
                   ),
         });
     };
