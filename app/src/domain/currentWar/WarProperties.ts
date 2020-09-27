@@ -1,5 +1,6 @@
 import { WarClan } from "./WarClan";
 import { WarTime } from "./WarTime";
+import { Time } from "../Time";
 
 const WAR_HOURS = 24;
 const PREPARE_HOURS = 23;
@@ -27,20 +28,22 @@ export class WarProperties {
         );
     }
 
-    isCloseToStart = () => this.time?.start.isCloseTo(WAR_HOURS + 1);
+    isCloseToStart = (time: Time) =>
+        this.time?.start.isCloseTo(WAR_HOURS + 1, time);
 
-    isCloseToStartOfPrepare = () =>
-        this.time?.start.isCloseTo(WAR_HOURS + PREPARE_HOURS - 1);
+    isCloseToStartOfPrepare = (time: Time) =>
+        this.time?.start.isCloseTo(WAR_HOURS + PREPARE_HOURS - 1, time);
 
-    alertMessage = (alerthours: number[]) => {
-        const time = this.time;
-        if (!time) throw new Error("WarTime was not found.");
-        return alerthours
-            .map((hours) => {
-                if (time.end.isCloseTo(hours))
-                    WarProperties.createAlertMessage(hours);
-            })
-            .join("");
+    alertMessage = (hourOfCloseTo: number) => {
+        return WarProperties.createAlertMessage(hourOfCloseTo);
+    };
+
+    hourCloseTo = (alerthours: number[], now: Time): number | false => {
+        const indexClosedTo = alerthours.find((hour) =>
+            this.time.end.isCloseTo(hour, now)
+        );
+        if (!indexClosedTo) return false;
+        return alerthours[indexClosedTo];
     };
 
     warInfoText = () =>

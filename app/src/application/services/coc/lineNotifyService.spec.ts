@@ -8,6 +8,7 @@ import { ClanMember } from "@src/domain/clan/ClanMember";
 import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarMember } from "@src/domain/currentWar/WarMember";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
+import { Time } from "@src/domain/Time";
 
 class LineNotifyMock implements ILineNotify {
     public sendMessage = async (message: string) => {
@@ -60,7 +61,11 @@ describe("LineNotifyService", () => {
                 warProperties: undefined,
                 state: "notInWar",
             });
-            const result = await service.inWarAndInTimeToNotify(war, allHours);
+            const result = await service.inWarAndInTimeToNotify(
+                war,
+                allHours,
+                new Time()
+            );
             expect(result?.message).toBeUndefined();
         });
         it("notify", async () => {
@@ -95,7 +100,11 @@ describe("LineNotifyService", () => {
                 ),
                 state: "inWar",
             });
-            const result = await service.inWarAndInTimeToNotify(war, allHours);
+            const result = await service.inWarAndInTimeToNotify(
+                war,
+                allHours,
+                new Time("20200921T131228.000Z")
+            );
             expect(result?.message).toBeDefined();
         });
     });

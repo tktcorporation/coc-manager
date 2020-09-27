@@ -4,7 +4,7 @@ export class Time extends Date {
      * @param hours The hours close to target time
      * @param currentTime
      */
-    isCloseTo = (hours: number, comparedTime: Time = new Time()) =>
+    isCloseTo = (hours: number, comparedTime: Time) =>
         Time.createMSecByHours(hours) <=
             this.valueOf() - comparedTime.valueOf() &&
         this.valueOf() - comparedTime.valueOf() <=
