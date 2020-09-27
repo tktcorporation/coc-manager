@@ -14,7 +14,7 @@ export class LineNotifyService {
         alertHours: number[]
     ) => {
         if (!currentWar.isInWar) return;
-        const message = currentWar.alertMessage(alertHours);
+        const message = currentWar.warProperties?.alertMessage(alertHours);
         if (!message) return;
         return await this.lineNotifier.sendMessage(message);
     };
