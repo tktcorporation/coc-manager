@@ -3,6 +3,7 @@ import { ClanTag } from "@src/domain/ClanTag";
 import { Clan } from "@src/domain/clan/Clan";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { WarClan } from "@src/domain/currentWar/WarClan";
+import { WarProperties } from "@src/domain/currentWar/WarProperties";
 
 export class CocApiMock implements ICocApi {
     getClanByTag = async (tag: ClanTag): Promise<Clan> => {
@@ -67,10 +68,30 @@ export class CocApiMock implements ICocApi {
     getClanWarByTag = async (tag: ClanTag): Promise<CurrentWar> => {
         return new CurrentWar({
             state: "warEnded",
-            teamSize: 5,
-            preparationStartTime: "20200920T141229.000Z",
-            startTime: "20200921T131229.000Z",
-            endTime: "20200922T131229.000Z",
+            warProperties: new WarProperties(
+                5,
+                new WarClan(
+                    49.8,
+                    new ClanTag("#C9JPLRCP"),
+                    "Squaaaaaaa123",
+                    {
+                        small:
+                            "https://api-assets.clashofclans.com/badges/70/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
+                        large:
+                            "https://api-assets.clashofclans.com/badges/512/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
+                        medium:
+                            "https://api-assets.clashofclans.com/badges/200/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
+                    },
+                    13,
+                    3,
+                    6,
+                    100,
+                    [Object as any]
+                ),
+                "20200921T131229.000Z",
+                "20200922T131229.000Z",
+                "20200920T141229.000Z"
+            ),
             clan: new WarClan(
                 100,
                 new ClanTag("#CYPLLU2R"),
@@ -88,24 +109,6 @@ export class CocApiMock implements ICocApi {
                 10,
                 15,
                 [[Object], [Object], [Object], [Object], [Object]] as any
-            ),
-            opponent: new WarClan(
-                49.8,
-                new ClanTag("#C9JPLRCP"),
-                "Squaaaaaaa123",
-                {
-                    small:
-                        "https://api-assets.clashofclans.com/badges/70/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
-                    large:
-                        "https://api-assets.clashofclans.com/badges/512/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
-                    medium:
-                        "https://api-assets.clashofclans.com/badges/200/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
-                },
-                13,
-                3,
-                6,
-                100,
-                [Object as any]
             ),
         });
     };

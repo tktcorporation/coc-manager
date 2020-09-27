@@ -7,6 +7,7 @@ import { ClanTag } from "@src/domain/ClanTag";
 import { ClanMember } from "@src/domain/clan/ClanMember";
 import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarMember } from "@src/domain/currentWar/WarMember";
+import { WarProperties } from "@src/domain/currentWar/WarProperties";
 
 class LineNotifyMock implements ILineNotify {
     public sendMessage = async (message: string) => {
@@ -42,19 +43,60 @@ const allHours = [
 
 describe("LineNotifyService", () => {
     const service = new LineNotifyService(new LineNotifyMock());
-    it("notify", async () => {
-        const war = new CurrentWar({
-            clan: new WarClan(1, new ClanTag("tag"), "string", {}, 1, 1, 1, 1, [
-                {} as any,
-            ]),
-            teamSize: undefined,
-            opponent: undefined,
-            startTime: undefined,
-            state: "string",
-            endTime: undefined,
-            preparationStartTime: undefined,
+    describe("inWarAndInTimeToNotify", () => {
+        it("notify", async () => {
+            const war = new CurrentWar({
+                clan: new WarClan(
+                    1,
+                    new ClanTag("tag"),
+                    "string",
+                    {},
+                    1,
+                    1,
+                    1,
+                    1,
+                    [{} as any]
+                ),
+                warProperties: undefined,
+                state: "notInWar",
+            });
+            const result = await service.inWarAndInTimeToNotify(war, allHours);
+            expect(result?.message).toBeUndefined();
         });
-        const result = await service.inWarAndInTimeToNotify(war, allHours);
-        expect(result?.message).toBeUndefined();
+        it("notify", async () => {
+            const war = new CurrentWar({
+                clan: new WarClan(
+                    1,
+                    new ClanTag("tag"),
+                    "string",
+                    {},
+                    1,
+                    1,
+                    1,
+                    1,
+                    [{} as any]
+                ),
+                warProperties: new WarProperties(
+                    10,
+                    new WarClan(
+                        1,
+                        new ClanTag("tag"),
+                        "string",
+                        {},
+                        1,
+                        1,
+                        1,
+                        1,
+                        [{} as any]
+                    ),
+                    "20200921T131229.000Z",
+                    "20200921T131229.000Z",
+                    "20200921T131229.000Z"
+                ),
+                state: "inWar",
+            });
+            const result = await service.inWarAndInTimeToNotify(war, allHours);
+            expect(result?.message).toBeDefined();
+        });
     });
 });
