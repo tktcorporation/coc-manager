@@ -1,6 +1,6 @@
 import { LineNotify } from "@src/infrastructure/http/line/lineNotifyApi";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
-import { Time } from "@src/domain/Time";
+import { Time } from "@src/domain/core/Time";
 
 export interface ILineNotify {
     sendMessage: (

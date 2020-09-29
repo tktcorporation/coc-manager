@@ -1,6 +1,6 @@
 import { WarClan } from "./WarClan";
 import { WarTime } from "./WarTime";
-import { Time } from "../Time";
+import { Time } from "../core/Time";
 
 const WAR_HOURS = 24;
 const PREPARE_HOURS = 23;

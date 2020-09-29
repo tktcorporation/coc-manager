@@ -8,7 +8,7 @@ import { ClanMember } from "@src/domain/clan/ClanMember";
 import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarMember } from "@src/domain/currentWar/WarMember";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
-import { Time } from "@src/domain/Time";
+import { Time } from "@src/domain/core/Time";
 
 class LineNotifyMock implements ILineNotify {
     public sendMessage = async (message: string) => {
