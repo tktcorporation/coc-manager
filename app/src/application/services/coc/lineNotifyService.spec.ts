@@ -9,6 +9,7 @@ import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarMember } from "@src/domain/currentWar/WarMember";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
 import { Time } from "@src/domain/core/Time";
+import { WarTime } from "@src/domain/currentWar/WarTime";
 
 class LineNotifyMock implements ILineNotify {
     public sendMessage = async (message: string) => {
@@ -45,7 +46,7 @@ const allHours = [
 describe("LineNotifyService", () => {
     const service = new LineNotifyService(new LineNotifyMock());
     describe("inWarAndInTimeToNotify", () => {
-        it("notify", async () => {
+        it("ignore", async () => {
             const war = new CurrentWar({
                 clan: new WarClan(
                     1,
@@ -103,7 +104,7 @@ describe("LineNotifyService", () => {
             const result = await service.inWarAndInTimeToNotify(
                 war,
                 allHours,
-                new Time("20200921T131228.000Z")
+                WarTime.parseByCocApiTimeStr("20200921T131228.000Z")
             );
             expect(result?.message).toBeDefined();
         });
