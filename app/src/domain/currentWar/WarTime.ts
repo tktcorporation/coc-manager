@@ -1,4 +1,4 @@
-import { Time } from "@src/domain/Time";
+import { Time } from "@src/domain/core/Time";
 
 export class WarTime {
     public readonly start: Time;
@@ -35,7 +35,7 @@ export class WarTime {
      */
     strtDateTimeStr = () => `${this.startDateStr()} ${this.startTimeStr()}`;
 
-    static parseByCocApiTimeStr = (str: string) => {
+    static parseByCocApiTimeStr = (str: string): Time => {
         const matched = cocApiDateArray(str);
         if (matched === null) throw new Error("time format is invalid");
         return Time.parseDateByRegExpMatchArray(matched);
