@@ -3,7 +3,7 @@ import { Clan } from "../../../domain/clan/Clan";
 import { ClanTag } from "../../../domain/ClanTag";
 import { CurrentWar } from "../../../domain/currentWar/CurrentWar";
 import { $log } from "ts-log-debug";
-import { ICocApi } from "@src/application/services/coc/clanWar/ClanWar";
+import { ICocApi } from "@src/application/services/coc/clanWar/ClanWarService";
 import { ClanMember } from "@src/domain/clan/ClanMember";
 import { League } from "@src/domain/clan/League";
 import { WarClan } from "@src/domain/currentWar/WarClan";

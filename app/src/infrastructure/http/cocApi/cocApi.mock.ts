@@ -1,4 +1,4 @@
-import { ICocApi } from "@src/application/services/coc/clanWar/ClanWar";
+import { ICocApi } from "@src/application/services/coc/clanWar/ClanWarService";
 import { ClanTag } from "@src/domain/ClanTag";
 import { Clan } from "@src/domain/clan/Clan";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";

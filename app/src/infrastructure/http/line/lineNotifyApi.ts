@@ -44,7 +44,7 @@ interface PostResult {
 }
 
 export class LineNotify implements ILineNotify {
-    constructor(private apiToken: string = Config.LINE_NOTIFY_API_TOKEN) {}
+    constructor(private apiToken: string) {}
 
     public sendMessage = async (message: string) => {
         const result = await this._post(message);

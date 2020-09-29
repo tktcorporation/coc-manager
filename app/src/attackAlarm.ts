@@ -1,4 +1,4 @@
-import { attackAlarm } from ".";
+import { attackAlarm } from "./index";
 
 const main = async () => {
     await attackAlarm();
