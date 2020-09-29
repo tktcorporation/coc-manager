@@ -1,12 +1,14 @@
 import { ICocApi } from "@src/application/services/coc/clanWar/ClanWar";
 import { ClanTag } from "@src/domain/ClanTag";
-import { Clan } from "@src/domain/Clan";
+import { Clan } from "@src/domain/clan/Clan";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
+import { WarClan } from "@src/domain/currentWar/WarClan";
+import { WarProperties } from "@src/domain/currentWar/WarProperties";
 
 export class CocApiMock implements ICocApi {
     getClanByTag = async (tag: ClanTag): Promise<Clan> => {
         return new Clan({
-            tag: "#CYPLLU2R",
+            tag: new ClanTag("#CYPLLU2R"),
             name: "連邦の黒い☆☆☆",
             type: "inviteOnly",
             description:
@@ -66,14 +68,35 @@ export class CocApiMock implements ICocApi {
     getClanWarByTag = async (tag: ClanTag): Promise<CurrentWar> => {
         return new CurrentWar({
             state: "warEnded",
-            teamSize: 5,
-            preparationStartTime: "20200920T141229.000Z",
-            startTime: "20200921T131229.000Z",
-            endTime: "20200922T131229.000Z",
-            clan: {
-                tag: "#CYPLLU2R",
-                name: "連邦の黒い☆☆☆",
-                badgeUrls: {
+            warProperties: new WarProperties(
+                5,
+                new WarClan(
+                    49.8,
+                    new ClanTag("#C9JPLRCP"),
+                    "Squaaaaaaa123",
+                    {
+                        small:
+                            "https://api-assets.clashofclans.com/badges/70/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
+                        large:
+                            "https://api-assets.clashofclans.com/badges/512/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
+                        medium:
+                            "https://api-assets.clashofclans.com/badges/200/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
+                    },
+                    13,
+                    3,
+                    6,
+                    100,
+                    [Object as any]
+                ),
+                "20200921T131229.000Z",
+                "20200922T131229.000Z",
+                "20200920T141229.000Z"
+            ),
+            clan: new WarClan(
+                100,
+                new ClanTag("#CYPLLU2R"),
+                "連邦の黒い☆☆☆",
+                {
                     small:
                         "https://api-assets.clashofclans.com/badges/70/WZ4OimQ3Dj7xc5bBw1m18FhbtRZdzoVEnKYkvohaess.png",
                     large:
@@ -81,43 +104,12 @@ export class CocApiMock implements ICocApi {
                     medium:
                         "https://api-assets.clashofclans.com/badges/200/WZ4OimQ3Dj7xc5bBw1m18FhbtRZdzoVEnKYkvohaess.png",
                 },
-                clanLevel: 10,
-                attacks: 10,
-                stars: 15,
-                destructionPercentage: 100,
-                members: [
-                    [Object],
-                    [Object],
-                    [Object],
-                    [Object],
-                    [Object],
-                ] as any,
-                expEarned: 100,
-            },
-            opponent: {
-                tag: "#C9JPLRCP",
-                name: "Squaaaaaaa123",
-                badgeUrls: {
-                    small:
-                        "https://api-assets.clashofclans.com/badges/70/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
-                    large:
-                        "https://api-assets.clashofclans.com/badges/512/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
-                    medium:
-                        "https://api-assets.clashofclans.com/badges/200/k33R0ZDMxTIKEP2ftoRzmjAPlBHZAOmXsTu54qInTdY.png",
-                },
-                clanLevel: 13,
-                attacks: 3,
-                stars: 6,
-                destructionPercentage: 49.8,
-                members: [
-                    [Object],
-                    [Object],
-                    [Object],
-                    [Object],
-                    [Object],
-                ] as any,
-                expEarned: 100,
-            },
+                10,
+                10,
+                10,
+                15,
+                [[Object], [Object], [Object], [Object], [Object]] as any
+            ),
         });
     };
 }

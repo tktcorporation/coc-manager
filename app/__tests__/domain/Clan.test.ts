@@ -1,4 +1,4 @@
-import { Clan } from "@src/domain/Clan";
+import { Clan } from "@src/domain/clan/Clan";
 
 describe("Clan", () => {
     it("initialize", () => {
