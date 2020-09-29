@@ -16,7 +16,9 @@ export class CurrentWar {
         this.warProperties = args.warProperties;
     }
 
-    isInWar = this.state !== "notInWar";
+    get isInWar(): boolean {
+        return this.state !== "notInWar";
+    }
 
     createWarPostBody = (): string => {
         if (!this.warProperties) throw new Error("warProperties is undefined.");
