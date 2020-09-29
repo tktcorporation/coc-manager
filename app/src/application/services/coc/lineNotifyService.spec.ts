@@ -10,6 +10,7 @@ import { WarMember } from "@src/domain/currentWar/WarMember";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
 import { Time } from "@src/domain/core/Time";
 import { WarTime } from "@src/domain/currentWar/WarTime";
+import { CocApiMock } from "@src/infrastructure/http/cocApi/cocApi.mock";
 
 class LineNotifyMock implements ILineNotify {
     public sendMessage = async (message: string) => {
@@ -45,68 +46,9 @@ const allHours = [
 
 describe("LineNotifyService", () => {
     const service = new LineNotifyService(new LineNotifyMock());
-    describe("inWarAndInTimeToNotify", () => {
-        it("ignore", async () => {
-            const war = new CurrentWar({
-                clan: new WarClan(
-                    1,
-                    new ClanTag("tag"),
-                    "string",
-                    {},
-                    1,
-                    1,
-                    1,
-                    1,
-                    [{} as any]
-                ),
-                warProperties: undefined,
-                state: "notInWar",
-            });
-            const result = await service.inWarAndInTimeToNotify(
-                war,
-                allHours,
-                new Time()
-            );
-            expect(result?.message).toBeUndefined();
-        });
-        it("notify", async () => {
-            const war = new CurrentWar({
-                clan: new WarClan(
-                    1,
-                    new ClanTag("tag"),
-                    "string",
-                    {},
-                    1,
-                    1,
-                    1,
-                    1,
-                    [{} as any]
-                ),
-                warProperties: new WarProperties(
-                    10,
-                    new WarClan(
-                        1,
-                        new ClanTag("tag"),
-                        "string",
-                        {},
-                        1,
-                        1,
-                        1,
-                        1,
-                        [{} as any]
-                    ),
-                    "20200921T131229.000Z",
-                    "20200921T131229.000Z",
-                    "20200921T131229.000Z"
-                ),
-                state: "inWar",
-            });
-            const result = await service.inWarAndInTimeToNotify(
-                war,
-                allHours,
-                WarTime.parseByCocApiTimeStr("20200921T131228.000Z")
-            );
-            expect(result?.message).toBeDefined();
-        });
+    it("sendMessage", async () => {
+        const result = await service.sendMessage("message");
+        expect(result.status).toBe(200);
+        expect(result.message).toBe("message");
     });
 });
