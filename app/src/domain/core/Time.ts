@@ -1,14 +1,13 @@
 export class Time extends Date {
-    /**
-     * Return true if within the hours to targetTime.
-     * @param hours The hours close to target time
-     * @param currentTime
-     */
-    isCloseTo = (hours: number, targetTime: Time) =>
-        Time.createMSecByHours(hours) <=
-            this.valueOf() - targetTime.valueOf() &&
-        this.valueOf() - targetTime.valueOf() <=
-            Time.createMSecByHours(hours + 1);
+    isIn = (hours: number, targetTime: Time): boolean =>
+        targetTime.valueOf() - this.valueOf() > 0 &&
+        Time.createMSecByHours(hours) >= this.diffToTarget(targetTime);
+
+    isCloseTo = (hours: number, targetTime: Time): boolean =>
+        Time.createMSecByHours(hours) >= this.diffToTarget(targetTime);
+
+    diffToTarget = (targetTime: Time): number =>
+        Math.abs(targetTime.valueOf() - this.valueOf());
 
     static parseDateByRegExpMatchArray = (regExpMatchArray: RegExpMatchArray) =>
         new Time(
