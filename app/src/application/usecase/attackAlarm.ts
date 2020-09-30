@@ -1,5 +1,5 @@
 import { LineNotifyService } from "../services/coc/lineNotifyService";
-import { BandService } from "../services/coc/band/bandService";
+// import { BandService } from "../services/coc/band/bandService";
 import { CocApi } from "@src/infrastructure/http/cocApi/cocApi";
 import { ClanStoreRepository } from "@src/application/repository/ClanStoreRepository";
 import { LineNotify } from "@src/infrastructure/http/line/lineNotifyApi";
@@ -26,29 +26,29 @@ export class AttackAlarmForLineControlller {
         this.attackAlarmCoordinator.sendStatus(clanTag);
 }
 
-export class AttackAlarmForBand {
-    constructor(
-        private clanStoreRepository: ClanStoreRepository,
-        private bandService: BandService,
-        private cocApi: ICocApi
-    ) {}
+// export class AttackAlarmForBand {
+//     constructor(
+//         private clanStoreRepository: ClanStoreRepository,
+//         private bandService: BandService,
+//         private cocApi: ICocApi
+//     ) {}
 
-    toBand = async (clanTag: ClanTag) => {
-        const currentWar = await this.cocApi.getClanWarByTag(clanTag);
+//     toBand = async (clanTag: ClanTag) => {
+//         const currentWar = await this.cocApi.getClanWarByTag(clanTag);
 
-        if (currentWar.warProperties?.isCloseToStartOfPrepare(new Time()))
-            await this.bandService.deletePost();
-        if (currentWar.warProperties?.isCloseToStart(new Time()))
-            await this.bandService.createPostAndSave(
-                currentWar.createWarPostBody()
-            );
-        await this.bandService.inWarAndInTimeToNotify(currentWar);
-    };
+//         if (currentWar.warProperties?.isCloseToStartOfPrepare(new Time()))
+//             await this.bandService.deletePost();
+//         if (currentWar.warProperties?.isCloseToStart(new Time()))
+//             await this.bandService.createPostAndSave(
+//                 currentWar.createWarPostBody()
+//             );
+//         await this.bandService.inWarAndInTimeToNotify(currentWar);
+//     };
 
-    refreshPost = async (clanTag: ClanTag) => {
-        const clan = await this.clanStoreRepository.getByTag(clanTag);
-        if (!clan.band) return;
-        const currentWar = await this.cocApi.getClanWarByTag(clanTag);
-        await this.bandService.refreshPost(currentWar);
-    };
-}
+//     refreshPost = async (clanTag: ClanTag) => {
+//         const clan = await this.clanStoreRepository.getByTag(clanTag);
+//         if (!clan.band) return;
+//         const currentWar = await this.cocApi.getClanWarByTag(clanTag);
+//         await this.bandService.refreshPost(currentWar);
+//     };
+// }
