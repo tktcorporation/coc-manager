@@ -1,6 +1,7 @@
 import Axios from "axios";
 import querystrings from "querystring";
 import { Config } from "@src/app.config";
+import { ILineNotify } from "@src/application/services/coc/lineNotifyService";
 
 interface PostResult {
     status: number;
@@ -42,8 +43,8 @@ interface PostResult {
     data: { status: number; message: string };
 }
 
-export class LineNotify {
-    constructor(private apiToken: string = Config.LINE_NOTIFY_API_TOKEN) {}
+export class LineNotify implements ILineNotify {
+    constructor(private apiToken: string) {}
 
     public sendMessage = async (message: string) => {
         const result = await this._post(message);

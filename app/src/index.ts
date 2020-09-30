@@ -2,12 +2,19 @@ import $log from "@src/infrastructure/logger";
 import { ConnectionManager } from "@src/infrastructure/connectionManager";
 import {
     stopNatgw,
-    startNatgw
+    startNatgw,
 } from "./application/services/natGateway/NatGatewaySwitchService";
-import { AttackAlarm } from "./application/usecase/attackAlarm";
+import { Config } from "./app.config";
+import { ClanTag } from "./domain/ClanTag";
+import { AttackAlarmForLineControlller } from "./application/usecase/attackAlarm";
+import { AttackAlarmCoordinator } from "./application/coordinator/attackAlarmCoordinator";
+import { ClanWarService } from "./application/services/coc/clanWar/ClanWarService";
+import { LineNotifyService } from "./application/services/coc/lineNotifyService";
+import { CocApi } from "./infrastructure/http/cocApi/cocApi";
+import { LineNotify } from "./infrastructure/http/line/lineNotifyApi";
 
-const clanTag = process.env.CLAN_TAG!;
-const token = process.env.COC_API_TOKEN!;
+const clanTag = new ClanTag(Config.CLAN_TAG);
+const cocApiToken = Config.COC_API_TOKEN;
 
 const connect = async () => {
     await ConnectionManager.createConnection();
@@ -16,7 +23,14 @@ const connect = async () => {
 export const checkClanWarStatus = async () => {
     try {
         await connect();
-        await AttackAlarm.checkStatus(token, clanTag);
+        await new AttackAlarmForLineControlller(
+            new AttackAlarmCoordinator(
+                new ClanWarService(new CocApi(cocApiToken)),
+                new LineNotifyService(
+                    new LineNotify(Config.LINE_NOTIFY_API_TOKEN)
+                )
+            )
+        ).sendStatus(clanTag);
     } catch (error) {
         $log.fatal(error);
     }
@@ -24,8 +38,15 @@ export const checkClanWarStatus = async () => {
 export const attackAlarm = async () => {
     try {
         await connect();
-        await AttackAlarm.toLine(token, clanTag);
-        await AttackAlarm.toBand(token, clanTag);
+        await new AttackAlarmForLineControlller(
+            new AttackAlarmCoordinator(
+                new ClanWarService(new CocApi(cocApiToken)),
+                new LineNotifyService(
+                    new LineNotify(Config.LINE_NOTIFY_API_TOKEN)
+                )
+            )
+        ).inWarAndInTimeToNotify(clanTag);
+        // await new AttackAlarm().toBand(clanTag);
     } catch (error) {
         $log.fatal(error);
     }
@@ -40,16 +61,6 @@ export const attackAlarm = async () => {
 //         $log.fatal(error);
 //     }
 // };
-
-// TODO: remove
-export const refreshPost = async () => {
-    try {
-        await connect();
-        await AttackAlarm.refreshPost(token, clanTag);
-    } catch (error) {
-        $log.fatal(error);
-    }
-};
 
 export const startNatGateway = async () => {
     try {
