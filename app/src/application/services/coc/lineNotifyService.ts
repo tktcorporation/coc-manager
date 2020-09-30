@@ -1,6 +1,8 @@
 import { LineNotify } from "@src/infrastructure/http/line/lineNotifyApi";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { Time } from "@src/domain/core/Time";
+import { ClanTag } from "@src/domain/ClanTag";
+import { ICocApi } from "./clanWar/ClanWarService";
 
 export interface ILineNotify {
     sendMessage: (
@@ -10,20 +12,11 @@ export interface ILineNotify {
 
 export class LineNotifyService {
     constructor(private lineNotifier: ILineNotify) {}
-    inWarAndInTimeToNotify = async (
-        currentWar: CurrentWar,
-        alertHours: number[],
-        time: Time
-    ) => {
-        if (!currentWar.isInWar) return;
-        if (!currentWar.warProperties)
-            throw new Error("warProperties is not found");
-        const hourClosedTo = currentWar.warProperties.hourCloseTo(
-            alertHours,
-            time
-        );
-        if (!hourClosedTo) throw new Error("the time is not close to");
-        const message = currentWar.warProperties.alertMessage(hourClosedTo);
-        return await this.lineNotifier.sendMessage(message);
-    };
+
+    sendMessage = async (
+        message: string
+    ): Promise<{
+        status: number;
+        message: string;
+    }> => await this.lineNotifier.sendMessage(message);
 }
