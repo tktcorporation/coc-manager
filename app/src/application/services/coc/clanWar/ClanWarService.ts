@@ -4,6 +4,8 @@ import { ClanTag } from "@src/domain/ClanTag";
 import { Clan } from "@src/domain/clan/Clan";
 import { ILineNotify } from "../lineNotifyService";
 import { Time } from "@src/domain/core/Time";
+import { NotExpectedStatusException } from "@src/domain/exception/notExpectedStatus.exception";
+import { ErrorMessages } from "@src/domain/exception/message";
 
 export interface ICocApi {
     getClanByTag: (tag: ClanTag) => Promise<Clan>;
@@ -22,7 +24,8 @@ export class ClanWarService {
         alertHours: number[],
         time: Time
     ): Promise<string> => {
-        if (!currentWar.isInWar) throw new Error("clan is not under the war");
+        if (!currentWar.isInWar)
+            throw new NotExpectedStatusException(ErrorMessages.NOT_IN_WAR);
         if (!currentWar.warProperties)
             throw new Error("warProperties is not found");
         const hourClosedTo = currentWar.warProperties.hourCloseTo(

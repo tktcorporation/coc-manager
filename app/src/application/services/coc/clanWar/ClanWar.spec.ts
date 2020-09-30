@@ -7,6 +7,7 @@ import { WarClan } from "@src/domain/currentWar/WarClan";
 import { Time } from "@src/domain/core/Time";
 import { WarTime } from "@src/domain/currentWar/WarTime";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
+import { ErrorMessages } from "@src/domain/exception/message";
 
 describe("ClanWar", () => {
     const service = new ClanWarService(new CocApiMock());
@@ -58,12 +59,10 @@ describe("ClanWar", () => {
                 warProperties: undefined,
                 state: "notInWar",
             });
-            const message = await service.inWarAndInTimeToMessage(
-                war,
-                allHours,
-                new Time()
-            );
-            expect(message).toBeUndefined();
+            const message = await service
+                .inWarAndInTimeToMessage(war, allHours, new Time())
+                .catch((e) => e.message as string);
+            expect(message).toBe(ErrorMessages.NOT_IN_WAR);
         });
         it("notify", async () => {
             const war = new CurrentWar({
