@@ -107,7 +107,7 @@ describe("ClanWar", () => {
                 WarTime.parseByCocApiTimeStr("20200921T131228.000Z")
             );
             expect(result).toBeDefined();
-            expect(result).toBe("終戦まで残り約2時間");
+            expect(result).toBe("\n終戦まで残り約2時間");
         });
     });
 });
