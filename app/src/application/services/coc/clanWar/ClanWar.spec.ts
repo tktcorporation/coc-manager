@@ -8,6 +8,11 @@ import { Time } from "@src/domain/core/Time";
 import { WarTime } from "@src/domain/currentWar/WarTime";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
 import { ErrorMessages } from "@src/domain/exception/message";
+import {
+    WarStateValue,
+    WarState,
+} from "@src/domain/currentWar/warState/WarState";
+import { $log } from "ts-log-debug";
 
 describe("ClanWar", () => {
     const service = new ClanWarService(new CocApiMock());
@@ -15,7 +20,7 @@ describe("ClanWar", () => {
         const currentWar = await service.getCurrentByTag(
             new ClanTag(Config.CLAN_TAG)
         );
-        expect(typeof currentWar.isInWar).toBe("boolean");
+        expect(typeof currentWar.state.isInWar).toBe("boolean");
     });
     describe("inWarAndInTimeToNotify", () => {
         const allHours = [
@@ -57,7 +62,7 @@ describe("ClanWar", () => {
                     [{} as any]
                 ),
                 warProperties: undefined,
-                state: "notInWar",
+                state: new WarState(WarStateValue.notIn),
             });
             const message = await service
                 .inWarAndInTimeToMessage(war, allHours, new Time())
@@ -94,7 +99,7 @@ describe("ClanWar", () => {
                     "20200921T131229.000Z",
                     "20200921T131229.000Z"
                 ),
-                state: "inWar",
+                state: new WarState(WarStateValue.In),
             });
             const result = await service.inWarAndInTimeToMessage(
                 war,
@@ -102,6 +107,7 @@ describe("ClanWar", () => {
                 WarTime.parseByCocApiTimeStr("20200921T131228.000Z")
             );
             expect(result).toBeDefined();
+            expect(result).toBe("終戦まで残り約2時間");
         });
     });
 });

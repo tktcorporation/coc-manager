@@ -24,7 +24,7 @@ export class ClanWarService {
         alertHours: number[],
         time: Time
     ): Promise<string> => {
-        if (!currentWar.isInWar)
+        if (!currentWar.state.isInWar)
             throw new NotExpectedStatusException(ErrorMessages.NOT_IN_WAR);
         if (!currentWar.warProperties)
             throw new Error("warProperties is not found");

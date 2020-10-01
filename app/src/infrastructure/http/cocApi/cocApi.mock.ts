@@ -4,6 +4,10 @@ import { Clan } from "@src/domain/clan/Clan";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
+import {
+    WarStateValue,
+    WarState,
+} from "@src/domain/currentWar/warState/WarState";
 
 export class CocApiMock implements ICocApi {
     getClanByTag = async (tag: ClanTag): Promise<Clan> => {
@@ -67,7 +71,7 @@ export class CocApiMock implements ICocApi {
     };
     getClanWarByTag = async (tag: ClanTag): Promise<CurrentWar> => {
         return new CurrentWar({
-            state: "warEnded",
+            state: new WarState(WarStateValue.Ended),
             warProperties: new WarProperties(
                 5,
                 new WarClan(

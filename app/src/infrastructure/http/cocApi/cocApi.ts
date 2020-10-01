@@ -9,6 +9,7 @@ import { League } from "@src/domain/clan/League";
 import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarMember } from "@src/domain/currentWar/WarMember";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
+import { WarState } from "@src/domain/currentWar/warState/WarState";
 
 interface ClanMemberResponse {
     league: {
@@ -98,7 +99,7 @@ export interface CurrentWarResponse {
     teamSize?: number;
     opponent?: WarClanResponse;
     startTime?: string;
-    state: "notInWar" | "inWar" | "warEnded";
+    state: WarState;
     endTime?: string;
     preparationStartTime?: string;
 }
