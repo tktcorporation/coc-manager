@@ -1,16 +1,4 @@
 import { LineNotifyService, ILineNotify } from "./lineNotifyService";
-import { LineNotify } from "@src/infrastructure/http/line/lineNotifyApi";
-import { Config } from "@src/app.config";
-import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
-import { Clan } from "@src/domain/clan/Clan";
-import { ClanTag } from "@src/domain/ClanTag";
-import { ClanMember } from "@src/domain/clan/ClanMember";
-import { WarClan } from "@src/domain/currentWar/WarClan";
-import { WarMember } from "@src/domain/currentWar/WarMember";
-import { WarProperties } from "@src/domain/currentWar/WarProperties";
-import { Time } from "@src/domain/core/Time";
-import { WarTime } from "@src/domain/currentWar/WarTime";
-import { CocApiMock } from "@src/infrastructure/http/cocApi/cocApi.mock";
 
 class LineNotifyMock implements ILineNotify {
     public sendMessage = async (message: string) => {
