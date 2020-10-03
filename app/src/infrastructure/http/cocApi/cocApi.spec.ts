@@ -9,7 +9,7 @@ describe("ClanWar", () => {
         const currentWar = await cocApi.getClanWarByTag(
             new ClanTag(Config.CLAN_TAG)
         );
-        expect(typeof currentWar.isInWar).toBe("boolean");
+        expect(typeof currentWar.state.isInWar).toBe("boolean");
     });
     it("getCurrentByTag", async () => {
         const clan = await cocApi.getClanByTag(new ClanTag(Config.CLAN_TAG));

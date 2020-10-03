@@ -25,6 +25,6 @@ export class AttackAlarmCoordinator {
 
     sendStatus = async (clanTag: ClanTag) => {
         const currentWar = await this.clanWarService.getCurrentByTag(clanTag);
-        await this.lineNotifyService.sendMessage(currentWar.state);
+        await this.lineNotifyService.sendMessage(currentWar.state.toString());
     };
 }

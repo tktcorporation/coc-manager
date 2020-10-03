@@ -11,21 +11,10 @@ export class WarProperties {
     public readonly opponent: WarClan;
     public readonly time: WarTime;
 
-    constructor(
-        teamSize: number,
-        opponent: WarClan,
-        startTime: string,
-        endTime: string,
-        preparationStartTime: string
-    ) {
+    constructor(teamSize: number, opponent: WarClan, time: WarTime) {
         this.teamSize = teamSize;
         this.opponent = opponent;
-        this.time = new WarTime(
-            startTime,
-            endTime,
-            preparationStartTime,
-            TIME_DIFFERENCE_TO_UTC
-        );
+        this.time = time;
     }
 
     isCloseToStart = (time: Time) =>

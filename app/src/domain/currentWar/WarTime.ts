@@ -3,20 +3,15 @@ import { Time } from "@src/domain/core/Time";
 export class WarTime {
     public readonly start: Time;
     public readonly end: Time;
-    public readonly preparationStartTime: Time;
-    public timeZone: number;
-    constructor(
-        startTimeStr: string,
-        endTimeStr: string,
-        preparationStartTime: string,
-        timeZone: number
-    ) {
-        this.start = WarTime.parseByCocApiTimeStr(startTimeStr);
-        this.end = WarTime.parseByCocApiTimeStr(endTimeStr);
-        this.preparationStartTime = WarTime.parseByCocApiTimeStr(
-            preparationStartTime
-        );
-        this.timeZone = timeZone;
+    public readonly preparationStart: Time;
+    constructor(args: {
+        startTime: Time;
+        endTime: Time;
+        preparationStartTime: Time;
+    }) {
+        this.start = args.startTime;
+        this.end = args.endTime;
+        this.preparationStart = args.preparationStartTime;
     }
     /**
      * mm月dd日
@@ -26,14 +21,13 @@ export class WarTime {
     /**
      * hh時mm分
      */
-    startTimeStr = () =>
-        `${
-            this.start.getHours() + this.timeZone
-        }時${this.start.getMinutes()}分`;
+    startTimeStr = (timeZone: number) =>
+        `${this.start.getHours() + timeZone}時${this.start.getMinutes()}分`;
     /**
      * mm月dd日 hh時mm分
      */
-    strtDateTimeStr = () => `${this.startDateStr()} ${this.startTimeStr()}`;
+    strtDateTimeStr = (timeZone: number) =>
+        `${this.startDateStr()} ${this.startTimeStr(timeZone)}`;
 
     static parseByCocApiTimeStr = (str: string): Time => {
         const matched = cocApiDateArray(str);
