@@ -10,6 +10,7 @@ import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarMember } from "@src/domain/currentWar/WarMember";
 import { WarProperties } from "@src/domain/currentWar/WarProperties";
 import { WarState } from "@src/domain/currentWar/warState/WarState";
+import { WarTime } from "@src/domain/currentWar/WarTime";
 
 interface ClanMemberResponse {
     league: {
@@ -148,6 +149,7 @@ export class CocApi implements ICocApi {
                 `/clans/%23${tag.toString()}/currentwar`
             )
         ).data;
+        $log.debug(result);
         return new CurrentWar({
             state: result.state,
             clan: new WarClan(
@@ -208,9 +210,15 @@ export class CocApi implements ICocApi {
                                   )
                           )
                       ),
-                      result.startTime,
-                      result.endTime,
-                      result.preparationStartTime
+                      new WarTime({
+                          startTime: WarTime.parseByCocApiTimeStr(
+                              result.startTime
+                          ),
+                          endTime: WarTime.parseByCocApiTimeStr(result.endTime),
+                          preparationStartTime: WarTime.parseByCocApiTimeStr(
+                              result.preparationStartTime
+                          ),
+                      })
                   ),
         });
     };
