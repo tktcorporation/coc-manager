@@ -8,6 +8,7 @@ import {
     WarStateValue,
     WarState,
 } from "@src/domain/currentWar/warState/WarState";
+import { WarTime } from "@src/domain/currentWar/WarTime";
 
 export class CocApiMock implements ICocApi {
     getClanByTag = async (tag: ClanTag): Promise<Clan> => {
@@ -92,9 +93,17 @@ export class CocApiMock implements ICocApi {
                     100,
                     [Object as any]
                 ),
-                "20200921T131229.000Z",
-                "20200922T131229.000Z",
-                "20200920T141229.000Z"
+                new WarTime({
+                    startTime: WarTime.parseByCocApiTimeStr(
+                        "20200921T131229.000Z"
+                    ),
+                    endTime: WarTime.parseByCocApiTimeStr(
+                        "20200922T131229.000Z"
+                    ),
+                    preparationStartTime: WarTime.parseByCocApiTimeStr(
+                        "20200920T141229.000Z"
+                    ),
+                })
             ),
             clan: new WarClan(
                 100,
