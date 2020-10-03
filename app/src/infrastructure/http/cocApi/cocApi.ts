@@ -100,7 +100,7 @@ export interface CurrentWarResponse {
     teamSize?: number;
     opponent?: WarClanResponse;
     startTime?: string;
-    state: WarState;
+    state: "notInWar" | "inWar" | "warEnded";
     endTime?: string;
     preparationStartTime?: string;
 }
@@ -151,7 +151,7 @@ export class CocApi implements ICocApi {
         ).data;
         $log.debug(result);
         return new CurrentWar({
-            state: result.state,
+            state: new WarState(result.state),
             clan: new WarClan(
                 result.clan.destructionPercentage,
                 result.clan.tag ? new ClanTag(result.clan.tag) : undefined,
