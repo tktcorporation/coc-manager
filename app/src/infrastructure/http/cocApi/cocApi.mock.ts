@@ -3,7 +3,7 @@ import { ClanTag } from "@src/domain/ClanTag";
 import { Clan } from "@src/domain/clan/Clan";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { WarClan } from "@src/domain/currentWar/WarClan";
-import { WarProperties } from "@src/domain/currentWar/WarProperties";
+import { WarProperties } from "@src/domain/currentWar/warProperties/WarProperties";
 import {
     WarStateValue,
     WarState,

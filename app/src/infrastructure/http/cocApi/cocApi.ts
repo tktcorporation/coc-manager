@@ -8,7 +8,7 @@ import { ClanMember } from "@src/domain/clan/ClanMember";
 import { League } from "@src/domain/clan/League";
 import { WarClan } from "@src/domain/currentWar/WarClan";
 import { WarMember } from "@src/domain/currentWar/WarMember";
-import { WarProperties } from "@src/domain/currentWar/WarProperties";
+import { WarProperties } from "@src/domain/currentWar/warProperties/WarProperties";
 import { WarState } from "@src/domain/currentWar/warState/WarState";
 import { WarTime } from "@src/domain/currentWar/WarTime";
 

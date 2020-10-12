@@ -1,5 +1,5 @@
 import { WarClan } from "./WarClan";
-import { WarProperties } from "./WarProperties";
+import { WarProperties } from "./warProperties/WarProperties";
 import { WarState } from "./warState/WarState";
 
 export class CurrentWar {
