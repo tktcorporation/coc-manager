@@ -13,6 +13,7 @@ import {
     WarState,
 } from "@src/domain/currentWar/warState/WarState";
 import { $log } from "ts-log-debug";
+import { NoNotificationException } from "@src/domain/exception/noNotification.exception";
 
 describe("ClanWar", () => {
     const service = new ClanWarService(new CocApiMock());
@@ -23,31 +24,7 @@ describe("ClanWar", () => {
         expect(typeof currentWar.state.isInWar).toBe("boolean");
     });
     describe("inWarAndInTimeToNotify", () => {
-        const allHours = [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
-            17,
-            18,
-            19,
-            20,
-            21,
-            22,
-            23,
-            24,
-        ];
+        const allHours = [1, 2, 3, 6, 12, 24];
         it("ignore", async () => {
             const war = new CurrentWar({
                 clan: new WarClan(
@@ -107,7 +84,7 @@ describe("ClanWar", () => {
                 const result = await service.inWarAndInTimeToMessage(
                     war,
                     allHours,
-                    new Time(2020, 10, 11, 6)
+                    new Time(2020, 10, 11, 5)
                 );
                 expect(result).toBeDefined();
                 expect(result).toBe("\n終戦まで残り約2時間");
@@ -149,7 +126,7 @@ describe("ClanWar", () => {
                 const result = await service.inWarAndInTimeToMessage(
                     war,
                     allHours,
-                    new Time(2020, 10, 11, 5)
+                    new Time(2020, 10, 11, 4)
                 );
                 expect(result).toBeDefined();
                 expect(result).toBe("\n終戦まで残り約3時間");
@@ -192,10 +169,100 @@ describe("ClanWar", () => {
             const result = await service.inWarAndInTimeToMessage(
                 war,
                 allHours,
-                new Time(2020, 10, 10, 9)
+                new Time(2020, 10, 10, 7)
             );
             expect(result).toBeDefined();
             expect(result).toBe("\n終戦まで残り約24時間");
+        });
+        it("12 hours before", async () => {
+            const war = new CurrentWar({
+                clan: new WarClan(
+                    1,
+                    new ClanTag("tag"),
+                    "string",
+                    {},
+                    1,
+                    1,
+                    1,
+                    1,
+                    [{} as any]
+                ),
+                warProperties: new WarProperties(
+                    10,
+                    new WarClan(
+                        1,
+                        new ClanTag("tag"),
+                        "string",
+                        {},
+                        1,
+                        1,
+                        1,
+                        1,
+                        [{} as any]
+                    ),
+                    new WarTime({
+                        startTime: new Time(2020, 10, 10, 8),
+                        endTime: new Time(2020, 10, 11, 7),
+                        preparationStartTime: new Time(2020, 10, 9, 8),
+                    })
+                ),
+                state: new WarState(WarStateValue.In),
+            });
+            const result = await service.inWarAndInTimeToMessage(
+                war,
+                allHours,
+                new Time(2020, 10, 10, 19)
+            );
+            expect(result).toBeDefined();
+            expect(result).toBe("\n終戦まで残り約12時間");
+        });
+        it("13 hours before", async () => {
+            const war = new CurrentWar({
+                clan: new WarClan(
+                    1,
+                    new ClanTag("tag"),
+                    "string",
+                    {},
+                    1,
+                    1,
+                    1,
+                    1,
+                    [{} as any]
+                ),
+                warProperties: new WarProperties(
+                    10,
+                    new WarClan(
+                        1,
+                        new ClanTag("tag"),
+                        "string",
+                        {},
+                        1,
+                        1,
+                        1,
+                        1,
+                        [{} as any]
+                    ),
+                    new WarTime({
+                        startTime: new Time(2020, 10, 10, 8),
+                        endTime: new Time(2020, 10, 11, 7),
+                        preparationStartTime: new Time(2020, 10, 9, 8),
+                    })
+                ),
+                state: new WarState(WarStateValue.In),
+            });
+            // const result = await () => service.inWarAndInTimeToMessage(
+            //     war,
+            //     allHours,
+            //     new Time(2020, 10, 10, 20)
+            // );
+            expect(
+                service.inWarAndInTimeToMessage(
+                    war,
+                    allHours,
+                    new Time(2020, 10, 10, 20)
+                )
+            ).rejects.toThrowError(NoNotificationException);
+            // expect(result).toBe("");
         });
     });
 });
