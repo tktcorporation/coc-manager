@@ -6,7 +6,7 @@ import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { WarClan } from "@src/domain/currentWar/WarClan";
 import { Time } from "@src/domain/core/Time";
 import { WarTime } from "@src/domain/currentWar/WarTime";
-import { WarProperties } from "@src/domain/currentWar/WarProperties";
+import { WarProperties } from "@src/domain/currentWar/warProperties/WarProperties";
 import { ErrorMessages } from "@src/domain/exception/message";
 import {
     WarStateValue,
