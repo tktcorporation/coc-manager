@@ -6,6 +6,7 @@ import { ILineNotify } from "../lineNotifyService";
 import { Time } from "@src/domain/core/Time";
 import { NotExpectedStatusException } from "@src/domain/exception/notExpectedStatus.exception";
 import { ErrorMessages } from "@src/domain/exception/message";
+import { NoNotificationException } from "@src/domain/exception/noNotification.exception";
 
 export interface ICocApi {
     getClanByTag: (tag: ClanTag) => Promise<Clan>;
@@ -32,7 +33,7 @@ export class ClanWarService {
             alertHours,
             time
         );
-        if (!hourClosedTo) throw new Error("the time is not close to");
+        if (!hourClosedTo) throw new NoNotificationException();
         return currentWar.warProperties.alertMessage(hourClosedTo);
     };
 }
