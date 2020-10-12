@@ -6,6 +6,9 @@ export class Time extends Date {
     isCloseTo = (hours: number, targetTime: Time): boolean =>
         Time.createMSecByHours(hours) >= this.diffToTarget(targetTime);
 
+    diffHoursToTarget = (targetTime: Time): number =>
+        this.diffToTarget(targetTime) / 1000 / 60 / 60;
+
     diffToTarget = (targetTime: Time): number =>
         Math.abs(targetTime.valueOf() - this.valueOf());
 

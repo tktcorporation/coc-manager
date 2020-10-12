@@ -1,6 +1,6 @@
-import { WarClan } from "./WarClan";
-import { WarTime } from "./WarTime";
-import { Time } from "../core/Time";
+import { WarClan } from "../WarClan";
+import { WarTime } from "../WarTime";
+import { Time } from "../../core/Time";
 
 const WAR_HOURS = 24;
 const PREPARE_HOURS = 23;
@@ -11,21 +11,10 @@ export class WarProperties {
     public readonly opponent: WarClan;
     public readonly time: WarTime;
 
-    constructor(
-        teamSize: number,
-        opponent: WarClan,
-        startTime: string,
-        endTime: string,
-        preparationStartTime: string
-    ) {
+    constructor(teamSize: number, opponent: WarClan, time: WarTime) {
         this.teamSize = teamSize;
         this.opponent = opponent;
-        this.time = new WarTime(
-            startTime,
-            endTime,
-            preparationStartTime,
-            TIME_DIFFERENCE_TO_UTC
-        );
+        this.time = time;
     }
 
     isCloseToStart = (time: Time) =>
@@ -39,11 +28,11 @@ export class WarProperties {
     };
 
     hourCloseTo = (alerthours: number[], now: Time): number | false => {
-        const indexClosedTo = alerthours.find((hour) =>
-            this.time.end.isCloseTo(hour, now)
-        );
-        if (!indexClosedTo) return false;
-        return alerthours[indexClosedTo];
+        const diff = Math.ceil(this.time.end.diffHoursToTarget(now));
+        for (const h of alerthours) {
+            if (h === diff) return h;
+        }
+        return false;
     };
 
     warInfoText = () =>

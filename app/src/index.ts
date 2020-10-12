@@ -16,13 +16,13 @@ import { LineNotify } from "./infrastructure/http/line/lineNotifyApi";
 const clanTag = new ClanTag(Config.CLAN_TAG);
 const cocApiToken = Config.COC_API_TOKEN;
 
-const connect = async () => {
-    await ConnectionManager.createConnection();
-};
+// const connect = async () => {
+//     await ConnectionManager.createConnection();
+// };
 
 export const checkClanWarStatus = async () => {
     try {
-        await connect();
+        // await connect();
         await new AttackAlarmForLineControlller(
             new AttackAlarmCoordinator(
                 new ClanWarService(new CocApi(cocApiToken)),
@@ -37,7 +37,7 @@ export const checkClanWarStatus = async () => {
 };
 export const attackAlarm = async () => {
     try {
-        await connect();
+        // await connect();
         await new AttackAlarmForLineControlller(
             new AttackAlarmCoordinator(
                 new ClanWarService(new CocApi(cocApiToken)),

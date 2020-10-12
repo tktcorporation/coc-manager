@@ -3,7 +3,12 @@ import { ClanTag } from "@src/domain/ClanTag";
 import { Clan } from "@src/domain/clan/Clan";
 import { CurrentWar } from "@src/domain/currentWar/CurrentWar";
 import { WarClan } from "@src/domain/currentWar/WarClan";
-import { WarProperties } from "@src/domain/currentWar/WarProperties";
+import { WarProperties } from "@src/domain/currentWar/warProperties/WarProperties";
+import {
+    WarStateValue,
+    WarState,
+} from "@src/domain/currentWar/warState/WarState";
+import { WarTime } from "@src/domain/currentWar/WarTime";
 
 export class CocApiMock implements ICocApi {
     getClanByTag = async (tag: ClanTag): Promise<Clan> => {
@@ -67,7 +72,7 @@ export class CocApiMock implements ICocApi {
     };
     getClanWarByTag = async (tag: ClanTag): Promise<CurrentWar> => {
         return new CurrentWar({
-            state: "warEnded",
+            state: new WarState(WarStateValue.Ended),
             warProperties: new WarProperties(
                 5,
                 new WarClan(
@@ -88,9 +93,17 @@ export class CocApiMock implements ICocApi {
                     100,
                     [Object as any]
                 ),
-                "20200921T131229.000Z",
-                "20200922T131229.000Z",
-                "20200920T141229.000Z"
+                new WarTime({
+                    startTime: WarTime.parseByCocApiTimeStr(
+                        "20200921T131229.000Z"
+                    ),
+                    endTime: WarTime.parseByCocApiTimeStr(
+                        "20200922T131229.000Z"
+                    ),
+                    preparationStartTime: WarTime.parseByCocApiTimeStr(
+                        "20200920T141229.000Z"
+                    ),
+                })
             ),
             clan: new WarClan(
                 100,

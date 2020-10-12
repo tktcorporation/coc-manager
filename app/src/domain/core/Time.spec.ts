@@ -13,29 +13,53 @@ describe("Time", () => {
         });
     });
     describe("closeTo", () => {
-        it("1hour close", () => {
-            const time = new Time("2020-09-21T13:11:50.000Z");
-            expect(time.valueOf()).toBe(1600693910000);
-            const targetTime = new Time("2020-09-21T13:12:00.000Z");
-            expect(targetTime.valueOf()).toBe(1600693920000);
-            const isCloseTo = time.isCloseTo(1, targetTime);
-            expect(isCloseTo).toBeTruthy();
+        describe("1 hour", () => {
+            it("1hour close", () => {
+                const time = new Time("2020-09-21T13:11:50.000Z");
+                expect(time.valueOf()).toBe(1600693910000);
+                const targetTime = new Time("2020-09-21T13:12:00.000Z");
+                expect(targetTime.valueOf()).toBe(1600693920000);
+                expect(Math.ceil(time.diffHoursToTarget(targetTime))).toBe(1);
+                const isCloseTo = time.isCloseTo(1, targetTime);
+                expect(isCloseTo).toBeTruthy();
+            });
+            it("1hour close and ahead", () => {
+                const time = new Time("2020-09-21T13:30:00.000Z");
+                expect(time.valueOf()).toBe(1600695000000);
+                const targetTime = new Time("2020-09-21T13:12:00.000Z");
+                expect(targetTime.valueOf()).toBe(1600693920000);
+                const isCloseTo = time.isCloseTo(1, targetTime);
+                expect(isCloseTo).toBeTruthy();
+            });
+            it("1hour not close", () => {
+                const time = new Time("2020-09-21T12:11:50.000Z");
+                expect(time.valueOf()).toBe(1600690310000);
+                const targetTime = new Time("2020-09-21T13:12:00.000Z");
+                expect(targetTime.valueOf()).toBe(1600693920000);
+                const isCloseTo = time.isCloseTo(1, targetTime);
+                expect(isCloseTo).toBeFalsy();
+            });
         });
-        it("1hour close and ahead", () => {
-            const time = new Time("2020-09-21T13:30:00.000Z");
-            expect(time.valueOf()).toBe(1600695000000);
-            const targetTime = new Time("2020-09-21T13:12:00.000Z");
-            expect(targetTime.valueOf()).toBe(1600693920000);
-            const isCloseTo = time.isCloseTo(1, targetTime);
-            expect(isCloseTo).toBeTruthy();
-        });
-        it("1hour not close", () => {
-            const time = new Time("2020-09-21T12:11:50.000Z");
-            expect(time.valueOf()).toBe(1600690310000);
-            const targetTime = new Time("2020-09-21T13:12:00.000Z");
-            expect(targetTime.valueOf()).toBe(1600693920000);
-            const isCloseTo = time.isCloseTo(1, targetTime);
-            expect(isCloseTo).toBeFalsy();
+        describe("14 hours", () => {
+            it("14 hour close", () => {
+                const time = new Time("2020-09-21T13:11:50.000Z");
+                const targetTime = new Time("2020-09-22T02:12:00.000Z");
+                expect(Math.ceil(time.diffHoursToTarget(targetTime))).toBe(14);
+                const isCloseTo = time.isCloseTo(14, targetTime);
+                expect(isCloseTo).toBeTruthy();
+            });
+            it("14 hour close and ahead", () => {
+                const time = new Time("2020-09-21T13:30:00.000Z");
+                const targetTime = new Time("2020-09-22T02:12:00.000Z");
+                const isCloseTo = time.isCloseTo(14, targetTime);
+                expect(isCloseTo).toBeTruthy();
+            });
+            it("14 hour not close", () => {
+                const time = new Time("2020-09-21T12:11:50.000Z");
+                const targetTime = new Time("2020-09-22T02:12:00.000Z");
+                const isCloseTo = time.isCloseTo(14, targetTime);
+                expect(isCloseTo).toBeFalsy();
+            });
         });
     });
     describe("in", () => {

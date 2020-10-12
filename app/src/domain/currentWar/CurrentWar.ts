@@ -1,23 +1,20 @@
 import { WarClan } from "./WarClan";
-import { WarProperties } from "./WarProperties";
+import { WarProperties } from "./warProperties/WarProperties";
+import { WarState } from "./warState/WarState";
 
 export class CurrentWar {
     public readonly clan: WarClan;
     public readonly warProperties?: WarProperties;
-    public readonly state: "notInWar" | "inWar" | "warEnded";
+    public readonly state: WarState;
 
     constructor(args: {
         clan: WarClan;
         warProperties?: WarProperties;
-        state: "notInWar" | "inWar" | "warEnded";
+        state: WarState;
     }) {
         this.clan = args.clan;
         this.state = args.state;
         this.warProperties = args.warProperties;
-    }
-
-    get isInWar(): boolean {
-        return this.state !== "notInWar";
     }
 
     createWarPostBody = (): string => {
