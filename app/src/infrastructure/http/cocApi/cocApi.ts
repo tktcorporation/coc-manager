@@ -11,6 +11,7 @@ import { WarMember } from "@src/domain/currentWar/WarMember";
 import { WarProperties } from "@src/domain/currentWar/warProperties/WarProperties";
 import { WarState } from "@src/domain/currentWar/warState/WarState";
 import { WarTime } from "@src/domain/currentWar/WarTime";
+import { WarMembers } from "@src/domain/currentWar/WarMembers";
 
 interface ClanMemberResponse {
     league: {
@@ -149,7 +150,7 @@ export class CocApi implements ICocApi {
                 `/clans/%23${tag.toString()}/currentwar`
             )
         ).data;
-        $log.debug(result);
+        $log.debug(result.clan.members);
         return new CurrentWar({
             state: new WarState(result.state),
             clan: new WarClan(
@@ -163,17 +164,19 @@ export class CocApi implements ICocApi {
                 result.clan.expEarned,
                 !result.clan.members
                     ? undefined
-                    : result.clan.members.map(
-                          (v) =>
-                              new WarMember(
-                                  v.tag,
-                                  v.name,
-                                  v.mapPosition,
-                                  v.townhallLevel,
-                                  v.opponentAttacks,
-                                  v.bestOpponentAttack,
-                                  v.attacks
-                              )
+                    : new WarMembers(
+                          result.clan.members.map(
+                              (v) =>
+                                  new WarMember(
+                                      v.tag,
+                                      v.name,
+                                      v.mapPosition,
+                                      v.townhallLevel,
+                                      v.opponentAttacks,
+                                      v.bestOpponentAttack,
+                                      v.attacks
+                                  )
+                          )
                       )
             ),
             warProperties: !(
@@ -197,17 +200,19 @@ export class CocApi implements ICocApi {
                           result.opponent.attacks,
                           result.opponent.stars,
                           result.opponent.expEarned,
-                          result.opponent.members.map(
-                              (v) =>
-                                  new WarMember(
-                                      v.tag,
-                                      v.name,
-                                      v.mapPosition,
-                                      v.townhallLevel,
-                                      v.opponentAttacks,
-                                      v.bestOpponentAttack,
-                                      v.attacks
-                                  )
+                          new WarMembers(
+                              result.opponent.members.map(
+                                  (v) =>
+                                      new WarMember(
+                                          v.tag,
+                                          v.name,
+                                          v.mapPosition,
+                                          v.townhallLevel,
+                                          v.opponentAttacks,
+                                          v.bestOpponentAttack,
+                                          v.attacks
+                                      )
+                              )
                           )
                       ),
                       new WarTime({
