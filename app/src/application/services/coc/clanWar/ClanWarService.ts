@@ -36,4 +36,21 @@ export class ClanWarService {
         if (!hourClosedTo) throw new NoNotificationException();
         return currentWar.warProperties.alertMessage(hourClosedTo);
     };
+
+    inWarToCreateMemberList = async (
+        currentWar: CurrentWar,
+        alertHour: number,
+        time: Time
+    ): Promise<string> => {
+        if (!currentWar.state.isInWar)
+            throw new NotExpectedStatusException(ErrorMessages.NOT_IN_WAR);
+        if (!currentWar.warProperties)
+            throw new Error("warProperties is not found");
+        const hourClosedTo = currentWar.warProperties.hourCloseTo(
+            [alertHour],
+            time
+        );
+        if (!hourClosedTo) throw new NoNotificationException();
+        return currentWar.createWarPostBody();
+    };
 }
