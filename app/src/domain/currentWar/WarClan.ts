@@ -1,5 +1,6 @@
 import { WarMember } from "./WarMember";
 import { ClanTag } from "../ClanTag";
+import { WarMembers } from "./WarMembers";
 
 export class WarClan {
     constructor(
@@ -11,6 +12,6 @@ export class WarClan {
         private attacks: number,
         private stars: number,
         private expEarned: number | undefined,
-        public readonly members: WarMember[] | undefined
+        public readonly members: WarMembers | undefined
     ) {}
 }

@@ -24,11 +24,10 @@ export class CurrentWar {
 
     private warMemberText = (): string => {
         const members = this.clan.members;
+        if (members === undefined) throw new Error("No war member found.");
         return (
             `参加メンバー:` +
-            (members === undefined
-                ? "nobody"
-                : members.map((member) => `\n・${member.getName()}`).join(""))
+            members.memberNameArray.map((name) => `\n・${name}`).join("")
         );
     };
 }
