@@ -12,6 +12,16 @@ export class Time extends Date {
     diffToTarget = (targetTime: Time): number =>
         Math.abs(targetTime.valueOf() - this.valueOf());
 
+    /**
+     * mm月dd日
+     */
+    createDateStr = (): string =>
+        `${this.getUTCMonth() + 1}月${this.getUTCDate()}日`;
+
+    getLocalTime(diff: number): Time {
+        return new Time(this.valueOf() + Time.createMSecByHours(diff));
+    }
+
     static parseDateByRegExpMatchArray = (regExpMatchArray: RegExpMatchArray) =>
         new Time(
             parseInt(regExpMatchArray[1], 10),

@@ -1,7 +1,14 @@
 import { Time } from "./Time";
 
 describe("Time", () => {
-    describe("initialize", () => {});
+    describe("initialize", () => {
+        it("new", () => {
+            const time = new Time(2020, 11, 12, 9, 10);
+            expect(time.getUTCHours()).toBe(9);
+            expect(time.getUTCMonth()).toBe(11);
+            expect(time.createDateStr()).toBe("12月12日");
+        });
+    });
     describe("diffToTarget", () => {
         it("", () => {
             const time = new Time(1600693910000);

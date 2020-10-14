@@ -13,21 +13,21 @@ export class WarTime {
         this.end = args.endTime;
         this.preparationStart = args.preparationStartTime;
     }
-    /**
-     * mm月dd日
-     */
-    startDateStr = () =>
-        `${this.start.getMonth() + 1}月${this.start.getDate()}日`;
+
     /**
      * hh時mm分
      */
     startTimeStr = (timeZone: number) =>
-        `${this.start.getHours() + timeZone}時${this.start.getMinutes()}分`;
+        `${
+            this.start.getUTCHours() + timeZone
+        }時${this.start.getUTCMinutes()}分`;
     /**
      * mm月dd日 hh時mm分
      */
     strtDateTimeStr = (timeZone: number) =>
-        `${this.startDateStr()} ${this.startTimeStr(timeZone)}`;
+        `${this.start
+            .getLocalTime(timeZone)
+            .createDateStr()} ${this.startTimeStr(timeZone)}`;
 
     static parseByCocApiTimeStr = (str: string): Time => {
         const matched = cocApiDateArray(str);

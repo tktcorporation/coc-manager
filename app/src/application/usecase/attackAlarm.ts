@@ -1,10 +1,4 @@
-import { LineNotifyService } from "../services/coc/lineNotifyService";
-// import { BandService } from "../services/coc/band/bandService";
-import { CocApi } from "@src/infrastructure/http/cocApi/cocApi";
-import { ClanStoreRepository } from "@src/application/repository/ClanStoreRepository";
-import { LineNotify } from "@src/infrastructure/http/line/lineNotifyApi";
 import { ClanTag } from "@src/domain/ClanTag";
-import { ICocApi } from "../services/coc/clanWar/ClanWarService";
 import { Time } from "@src/domain/core/Time";
 import { AttackAlarmCoordinator } from "../coordinator/attackAlarmCoordinator";
 
@@ -13,11 +7,22 @@ export class AttackAlarmForLineControlller {
 
     inWarAndInTimeToNotify = async (
         clanTag: ClanTag,
-        alertHours: number[] = [1, 3, 6, 12, 24]
+        alertHours: number[] = [1, 3, 6, 12]
     ): Promise<void> => {
         await this.attackAlarmCoordinator.inWarAndInTimeToNotify(
             clanTag,
             alertHours,
+            new Time()
+        );
+    };
+
+    inWarToNotifyMemberList = async (
+        clanTag: ClanTag,
+        alertHour: number = 24
+    ): Promise<void> => {
+        await this.attackAlarmCoordinator.inWarToNotifyMemberList(
+            clanTag,
+            alertHour,
             new Time()
         );
     };

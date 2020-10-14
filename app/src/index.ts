@@ -38,14 +38,16 @@ export const checkClanWarStatus = async () => {
 export const attackAlarm = async () => {
     try {
         // await connect();
-        await new AttackAlarmForLineControlller(
+        const coordinator = await new AttackAlarmForLineControlller(
             new AttackAlarmCoordinator(
                 new ClanWarService(new CocApi(cocApiToken)),
                 new LineNotifyService(
                     new LineNotify(Config.LINE_NOTIFY_API_TOKEN)
                 )
             )
-        ).inWarAndInTimeToNotify(clanTag);
+        );
+        await coordinator.inWarAndInTimeToNotify(clanTag);
+        await coordinator.inWarToNotifyMemberList(clanTag);
         // await new AttackAlarm().toBand(clanTag);
     } catch (error) {
         $log.fatal(error);
