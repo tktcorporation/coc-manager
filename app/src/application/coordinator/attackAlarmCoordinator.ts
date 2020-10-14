@@ -23,6 +23,18 @@ export class AttackAlarmCoordinator {
         return await this.lineNotifyService.sendMessage(message);
     };
 
+    async inWarToNotifyMemberList(
+        clanTag: ClanTag,
+        alertHour: number,
+        time: Time
+    ) {
+        const currentWar = await this.clanWarService.getCurrentByTag(clanTag);
+        const message = await this.clanWarService
+            .inWarToCreateMemberList(currentWar, alertHour, time)
+            .catch((e) => e.message as string);
+        return await this.lineNotifyService.sendMessage(message);
+    }
+
     sendStatus = async (clanTag: ClanTag) => {
         const currentWar = await this.clanWarService.getCurrentByTag(clanTag);
         await this.lineNotifyService.sendMessage(currentWar.state.toString());
