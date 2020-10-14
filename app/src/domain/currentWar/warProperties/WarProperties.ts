@@ -37,11 +37,19 @@ export class WarProperties {
 
     warInfoText = () =>
         this.time &&
-        `\n開戦日時: ${this.time.startDateStr()}` +
-            `${
-                this.time.start.getHours() + TIME_DIFFERENCE_TO_UTC
-            }時${this.time.start.getMinutes()}分` +
-            `\n`;
+        `${this.warStartTimeInfoText()}\n${this.warEndTimeInfoText()}`;
+
+    warStartTimeInfoText = (): string =>
+        this.time &&
+        `開戦日時: ${this.time.start
+            .getLocalTime(TIME_DIFFERENCE_TO_UTC)
+            .createDateStr()}`;
+
+    warEndTimeInfoText = (): string =>
+        this.time &&
+        `終戦日時: ${this.time.end
+            .getLocalTime(TIME_DIFFERENCE_TO_UTC)
+            .createDateStr()}`;
 
     private static createAlertMessage = (hour: number) =>
         `\n終戦まで残り約${hour}時間`;
