@@ -91,7 +91,7 @@ export class CocApiMock implements ICocApi {
                     3,
                     6,
                     100,
-                    [Object as any]
+                    Object as any
                 ),
                 new WarTime({
                     startTime: WarTime.parseByCocApiTimeStr(
@@ -121,7 +121,7 @@ export class CocApiMock implements ICocApi {
                 10,
                 10,
                 15,
-                [[Object], [Object], [Object], [Object], [Object]] as any
+                Object as any
             ),
         });
     };

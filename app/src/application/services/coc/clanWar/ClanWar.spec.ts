@@ -36,7 +36,7 @@ describe("ClanWar", () => {
                     1,
                     1,
                     1,
-                    [{} as any]
+                    Object as any
                 ),
                 warProperties: undefined,
                 state: new WarState(WarStateValue.notIn),
@@ -58,7 +58,7 @@ describe("ClanWar", () => {
                         1,
                         1,
                         1,
-                        [{} as any]
+                        Object as any
                     ),
                     warProperties: new WarProperties(
                         10,
@@ -71,7 +71,7 @@ describe("ClanWar", () => {
                             1,
                             1,
                             1,
-                            [{} as any]
+                            Object as any
                         ),
                         new WarTime({
                             startTime: new Time(2020, 10, 10, 8),
@@ -100,7 +100,7 @@ describe("ClanWar", () => {
                         1,
                         1,
                         1,
-                        [{} as any]
+                        Object as any
                     ),
                     warProperties: new WarProperties(
                         10,
@@ -113,7 +113,7 @@ describe("ClanWar", () => {
                             1,
                             1,
                             1,
-                            [{} as any]
+                            Object as any
                         ),
                         new WarTime({
                             startTime: new Time(2020, 10, 10, 8),
@@ -143,7 +143,7 @@ describe("ClanWar", () => {
                     1,
                     1,
                     1,
-                    [{} as any]
+                    Object as any
                 ),
                 warProperties: new WarProperties(
                     10,
@@ -156,7 +156,7 @@ describe("ClanWar", () => {
                         1,
                         1,
                         1,
-                        [{} as any]
+                        Object as any
                     ),
                     new WarTime({
                         startTime: new Time(2020, 10, 10, 8),
@@ -185,7 +185,7 @@ describe("ClanWar", () => {
                     1,
                     1,
                     1,
-                    [{} as any]
+                    Object as any
                 ),
                 warProperties: new WarProperties(
                     10,
@@ -198,7 +198,7 @@ describe("ClanWar", () => {
                         1,
                         1,
                         1,
-                        [{} as any]
+                        Object as any
                     ),
                     new WarTime({
                         startTime: new Time(2020, 10, 10, 8),
@@ -227,7 +227,7 @@ describe("ClanWar", () => {
                     1,
                     1,
                     1,
-                    [{} as any]
+                    Object as any
                 ),
                 warProperties: new WarProperties(
                     10,
@@ -240,7 +240,7 @@ describe("ClanWar", () => {
                         1,
                         1,
                         1,
-                        [{} as any]
+                        Object as any
                     ),
                     new WarTime({
                         startTime: new Time(2020, 10, 10, 8),

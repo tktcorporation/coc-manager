@@ -17,7 +17,7 @@ describe("WarProperties", () => {
                 10,
                 12,
                 10,
-                []
+                Object as any
             ),
             new WarTime({
                 startTime: new Time(2020, 12, 10, 23),
