@@ -1,4 +1,6 @@
 # Overview
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftktcorporation%2Fcoc-manager.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftktcorporation%2Fcoc-manager?ref=badge_shield)
+
 
 Usages
 - [On a Docker](#docker)
@@ -128,3 +130,7 @@ sam local invoke <LAMBDA_FUNCTION_NAME>
 * The `devDependencies` are installed in order for `tsc` to compile the TypeScript code to Javascript
 * The dev `node_modules` are then removed and the production dependencies are installed and zipped in the lambda package
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftktcorporation%2Fcoc-manager.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftktcorporation%2Fcoc-manager?ref=badge_large)
